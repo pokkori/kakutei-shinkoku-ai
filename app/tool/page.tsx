@@ -1,0 +1,338 @@
+"use client";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+
+const TABS = [
+  { key: "tax", label: "納税額予測" },
+  { key: "expenses", label: "経費最適化" },
+  { key: "procedure", label: "申告手順" },
+  { key: "savings", label: "節税アドバイス" },
+  { key: "faq", label: "よくある質問" },
+] as const;
+
+type TabKey = typeof TABS[number]["key"];
+type Result = Record<TabKey, string>;
+
+export default function ToolPage() {
+  const [isPremium, setIsPremium] = useState(false);
+  const [remaining, setRemaining] = useState(3);
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<Result | null>(null);
+  const [activeTab, setActiveTab] = useState<TabKey>("tax");
+  const [showPaywall, setShowPaywall] = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const [form, setForm] = useState({
+    reportType: "white",
+    occupation: "",
+    revenue: "",
+    totalExpenses: "",
+    expenseDetails: "",
+    hasSpouse: false,
+    hasDependents: false,
+    socialInsurance: "",
+    lifeInsurance: "",
+    furusato: "",
+    medical: "",
+    other: "",
+  });
+
+  useEffect(() => {
+    fetch("/api/auth/status")
+      .then((r) => r.json())
+      .then((d) => {
+        setIsPremium(d.premium);
+        if (d.remaining !== undefined) setRemaining(d.remaining);
+      });
+  }, []);
+
+  function setField(key: string, value: string | boolean) {
+    setForm((f) => ({ ...f, [key]: value }));
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!form.occupation || !form.revenue) return;
+    setLoading(true);
+    setResult(null);
+    try {
+      const res = await fetch("/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (res.status === 402 || res.status === 429) {
+        setShowPaywall(true);
+        setLoading(false);
+        return;
+      }
+      const data = await res.json();
+      if (data.result) {
+        setResult(data.result);
+        if (data.remaining !== undefined) setRemaining(data.remaining);
+      }
+    } catch {
+      // ignore
+    }
+    setLoading(false);
+  }
+
+  async function startCheckout() {
+    setCheckoutLoading(true);
+    try {
+      const res = await fetch("/api/stripe/checkout", { method: "POST" });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+    } catch {
+      setCheckoutLoading(false);
+    }
+  }
+
+  function renderContent(text: string) {
+    return text.split("\n").map((line, i) => {
+      if (line.startsWith("### ")) return <h3 key={i} className="text-base font-bold text-green-300 mt-4 mb-1">{line.replace("### ", "")}</h3>;
+      if (line.startsWith("## ")) return <h2 key={i} className="text-lg font-bold text-white mt-5 mb-2">{line.replace("## ", "")}</h2>;
+      if (line.trim() === "---" || line.trim() === "") return <div key={i} className="h-2" />;
+      const html = line.replace(/\*\*(.+?)\*\*/g, '<strong class="text-white">$1</strong>');
+      return <p key={i} className="text-gray-300 text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: html }} />;
+    });
+  }
+
+  return (
+    <main className="min-h-screen bg-gray-950 pb-20">
+      {/* Header */}
+      <header className="bg-gray-900 border-b border-gray-800 px-4 py-4 flex items-center justify-between">
+        <Link href="/" className="text-green-400 font-black text-xl">確定申告AI</Link>
+        {!isPremium && (
+          <button
+            onClick={startCheckout}
+            className="bg-green-500 hover:bg-green-400 text-black text-sm font-bold px-4 py-2 rounded-lg transition"
+          >
+            ¥2,980でアップグレード
+          </button>
+        )}
+        {isPremium && <span className="text-green-400 text-sm font-bold">✓ プレミアム会員</span>}
+      </header>
+
+      {/* Urgency */}
+      <div className="bg-red-700 text-white text-center py-2 px-4 text-xs font-bold">
+        ⚠️ 確定申告締め切り：2026年3月15日（日）まであと6日
+      </div>
+
+      <div className="max-w-2xl mx-auto px-4 pt-8">
+        {/* Free remaining */}
+        {!isPremium && (
+          <div className="bg-yellow-900 border border-yellow-700 rounded-xl p-4 mb-6 text-sm text-yellow-200">
+            無料試用回数：残り <strong className="text-yellow-300 text-base">{remaining}</strong> 回
+            （プレミアム版にアップグレードすると無制限に使えます）
+          </div>
+        )}
+
+        <h1 className="text-2xl font-black mb-6 text-white">確定申告AI診断</h1>
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* 申告の種類 */}
+          <div>
+            <label className="block text-sm font-bold text-gray-300 mb-2">申告の種類</label>
+            <div className="flex flex-wrap gap-3">
+              {[
+                { val: "white", label: "白色申告" },
+                { val: "blue10", label: "青色申告（10万円控除）" },
+                { val: "blue65", label: "青色申告（65万円控除）" },
+                { val: "unknown", label: "わからない（AIに診断してほしい）" },
+              ].map((o) => (
+                <label key={o.val} className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer text-sm transition ${form.reportType === o.val ? "border-green-500 bg-green-900 text-green-300" : "border-gray-700 text-gray-400 hover:border-gray-500"}`}>
+                  <input type="radio" name="reportType" value={o.val} checked={form.reportType === o.val} onChange={() => setField("reportType", o.val)} className="sr-only" />
+                  {o.label}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* 職業 */}
+          <div>
+            <label className="block text-sm font-bold text-gray-300 mb-2">職業・業種 <span className="text-red-400">*</span></label>
+            <input
+              type="text"
+              value={form.occupation}
+              onChange={(e) => setField("occupation", e.target.value)}
+              placeholder="例: Webデザイナー、エンジニア、ライター、YouTuber"
+              className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500"
+              required
+            />
+          </div>
+
+          {/* 年間売上 */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-bold text-gray-300 mb-2">年間売上（収入） <span className="text-red-400">*</span></label>
+              <div className="relative">
+                <input
+                  type="number"
+                  value={form.revenue}
+                  onChange={(e) => setField("revenue", e.target.value)}
+                  placeholder="例: 350"
+                  className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500"
+                  required
+                />
+                <span className="absolute right-3 top-3.5 text-gray-500 text-sm">万円</span>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-gray-300 mb-2">年間経費の合計</label>
+              <div className="relative">
+                <input
+                  type="number"
+                  value={form.totalExpenses}
+                  onChange={(e) => setField("totalExpenses", e.target.value)}
+                  placeholder="例: 80"
+                  className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500"
+                />
+                <span className="absolute right-3 top-3.5 text-gray-500 text-sm">万円</span>
+              </div>
+            </div>
+          </div>
+
+          {/* 経費内訳 */}
+          <div>
+            <label className="block text-sm font-bold text-gray-300 mb-2">主な経費の内訳</label>
+            <textarea
+              value={form.expenseDetails}
+              onChange={(e) => setField("expenseDetails", e.target.value)}
+              placeholder="例: 通信費3万円、書籍代2万円、交通費5万円、PC購入15万円、自宅家賃の30%按分"
+              className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500 h-20 resize-none"
+            />
+          </div>
+
+          {/* 各種控除 */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-bold text-gray-300 mb-2">社会保険料支払い</label>
+              <div className="relative">
+                <input type="number" value={form.socialInsurance} onChange={(e) => setField("socialInsurance", e.target.value)} placeholder="例: 20" className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500" />
+                <span className="absolute right-3 top-3.5 text-gray-500 text-sm">万円</span>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-gray-300 mb-2">生命保険料控除</label>
+              <div className="relative">
+                <input type="number" value={form.lifeInsurance} onChange={(e) => setField("lifeInsurance", e.target.value)} placeholder="例: 4" className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500" />
+                <span className="absolute right-3 top-3.5 text-gray-500 text-sm">万円</span>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-gray-300 mb-2">ふるさと納税額</label>
+              <div className="relative">
+                <input type="number" value={form.furusato} onChange={(e) => setField("furusato", e.target.value)} placeholder="例: 5" className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500" />
+                <span className="absolute right-3 top-3.5 text-gray-500 text-sm">万円</span>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-gray-300 mb-2">医療費（年間）</label>
+              <div className="relative">
+                <input type="number" value={form.medical} onChange={(e) => setField("medical", e.target.value)} placeholder="例: 15" className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500" />
+                <span className="absolute right-3 top-3.5 text-gray-500 text-sm">万円</span>
+              </div>
+            </div>
+          </div>
+
+          {/* 家族 */}
+          <div>
+            <label className="block text-sm font-bold text-gray-300 mb-2">家族構成</label>
+            <div className="flex gap-4">
+              <label className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer">
+                <input type="checkbox" checked={form.hasSpouse} onChange={(e) => setField("hasSpouse", e.target.checked)} className="w-4 h-4 accent-green-500" />
+                配偶者あり
+              </label>
+              <label className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer">
+                <input type="checkbox" checked={form.hasDependents} onChange={(e) => setField("hasDependents", e.target.checked)} className="w-4 h-4 accent-green-500" />
+                扶養家族あり
+              </label>
+            </div>
+          </div>
+
+          {/* その他 */}
+          <div>
+            <label className="block text-sm font-bold text-gray-300 mb-2">その他の相談事項・気になること</label>
+            <textarea
+              value={form.other}
+              onChange={(e) => setField("other", e.target.value)}
+              placeholder="例: 昨年まで会社員で今年から個人事業主になった / 副業収入が20万を超えた / 海外クライアントからの収入がある"
+              className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500 h-20 resize-none"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading || !form.occupation || !form.revenue}
+            className="w-full bg-green-500 hover:bg-green-400 text-black font-black text-lg py-4 rounded-xl transition disabled:opacity-50"
+          >
+            {loading ? "AI分析中...（30秒ほどお待ちください）" : "AIで確定申告を分析する →"}
+          </button>
+        </form>
+
+        {/* Results */}
+        {result && (
+          <div className="mt-10">
+            <h2 className="text-xl font-black mb-4 text-white">📊 AI分析結果</h2>
+            {/* Tabs */}
+            <div className="flex overflow-x-auto gap-2 mb-4 pb-1">
+              {TABS.map((tab) => (
+                <button
+                  key={tab.key}
+                  onClick={() => setActiveTab(tab.key)}
+                  className={`shrink-0 px-4 py-2 rounded-lg text-sm font-bold transition ${activeTab === tab.key ? "bg-green-500 text-black" : "bg-gray-800 text-gray-300 hover:bg-gray-700"}`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+            <div className="bg-gray-900 rounded-2xl p-6 min-h-48">
+              {renderContent(result[activeTab])}
+            </div>
+            <div className="flex gap-3 mt-4">
+              <button
+                onClick={() => { navigator.clipboard.writeText(result[activeTab]); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+                className="flex-1 bg-gray-700 hover:bg-gray-600 text-white text-sm font-bold py-3 rounded-xl transition"
+              >
+                {copied ? "コピーしました！" : "📋 このタブをコピー"}
+              </button>
+              <button
+                onClick={() => window.print()}
+                className="flex-1 bg-gray-700 hover:bg-gray-600 text-white text-sm font-bold py-3 rounded-xl transition"
+              >
+                🖨️ 印刷する
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Paywall Modal */}
+      {showPaywall && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-900 border border-gray-700 rounded-2xl p-8 max-w-md w-full text-center">
+            <div className="text-4xl mb-4">🔒</div>
+            <h2 className="text-xl font-black mb-3">無料回数を使い切りました</h2>
+            <p className="text-gray-400 text-sm mb-6">
+              プレミアム版（¥2,980/年）にアップグレードすると、
+              確定申告AIを無制限で使用できます。
+              税理士費用と比較して<strong className="text-green-400">¥47,000以上お得</strong>。
+            </p>
+            <button
+              onClick={startCheckout}
+              disabled={checkoutLoading}
+              className="w-full bg-green-500 hover:bg-green-400 text-black font-black text-lg py-4 rounded-xl transition disabled:opacity-60 mb-3"
+            >
+              {checkoutLoading ? "処理中..." : "¥2,980でアップグレードする →"}
+            </button>
+            <button onClick={() => setShowPaywall(false)} className="text-gray-500 text-sm hover:text-gray-300 transition">
+              閉じる
+            </button>
+          </div>
+        </div>
+      )}
+    </main>
+  );
+}
