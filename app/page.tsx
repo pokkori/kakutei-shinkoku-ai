@@ -2,6 +2,12 @@
 import { useState } from "react";
 import Link from "next/link";
 
+const DEADLINE = new Date("2026-03-15T23:59:59+09:00");
+function getDaysLeft() {
+  const diff = DEADLINE.getTime() - Date.now();
+  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
+
 export default function Home() {
   const [loading, setLoading] = useState(false);
 
@@ -16,13 +22,17 @@ export default function Home() {
     }
   }
 
+  const daysLeft = getDaysLeft();
+
   return (
     <main>
       {/* Urgency Banner */}
-      <div className="bg-red-600 text-white text-center py-3 px-4 text-sm font-bold">
-        ⚠️ 2026年3月15日（日）締め切りまであと6日！ まだ間に合います →{" "}
-        <button onClick={startCheckout} className="underline">今すぐAIで完成させる</button>
-      </div>
+      {daysLeft > 0 && (
+        <div className="bg-red-600 text-white text-center py-3 px-4 text-sm font-bold">
+          ⚠️ 2026年3月15日（日）締め切りまであと{daysLeft}日！ まだ間に合います →{" "}
+          <button onClick={startCheckout} className="underline">今すぐAIで完成させる</button>
+        </div>
+      )}
 
       {/* Hero */}
       <section className="bg-gray-950 pt-20 pb-16 px-4 text-center">
@@ -158,7 +168,9 @@ export default function Home() {
           >
             {loading ? "処理中..." : "今すぐ¥2,980で始める →"}
           </button>
-          <p className="text-gray-500 text-sm mt-3">3月15日締め切りまでに余裕をもって完成させよう</p>
+          {daysLeft > 0 && (
+            <p className="text-gray-500 text-sm mt-3">3月15日締め切りまであと{daysLeft}日。余裕をもって完成させよう</p>
+          )}
         </div>
       </section>
 
@@ -202,6 +214,8 @@ export default function Home() {
         <p>© 2026 確定申告AI</p>
         <p className="mt-2">
           <Link href="/legal" className="hover:text-gray-300 underline">特定商取引法に基づく表記</Link>
+          {" ｜ "}
+          <Link href="/privacy" className="hover:text-gray-300 underline">プライバシーポリシー</Link>
           {" ｜ "}
           <span>本サービスは情報提供を目的としており、税理士による税務相談の代替ではありません</span>
         </p>
