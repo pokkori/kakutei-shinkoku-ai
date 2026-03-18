@@ -1,5 +1,5 @@
 "use client";
-import PayjpModal from "@/components/PayjpModal";
+import KomojuButton from "@/components/KomojuButton";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -230,12 +230,16 @@ export default function Home() {
         </p>
       </footer>
       {showPayjp && (
-        <PayjpModal
-          publicKey={process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY!}
-          planLabel="確定申告AIプレミアム ¥2,980（買い切り）"
-          onSuccess={() => setShowPayjp(false)}
-          onClose={() => setShowPayjp(false)}
-        />
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl text-center">
+            <button onClick={() => setShowPayjp(false)} className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
+            <div className="text-3xl mb-3">📊</div>
+            <h2 className="text-lg font-bold mb-2">確定申告AIプレミアム</h2>
+            <p className="text-sm text-gray-500 mb-4">¥2,980（買い切り）・14日間返金保証</p>
+            <KomojuButton planId="standard" planLabel="今すぐ購入して申告を完成させる →"
+              className="w-full bg-green-500 hover:bg-green-400 text-black font-black py-3 rounded-xl disabled:opacity-50" />
+          </div>
+        </div>
       )}
     </main>
   );
