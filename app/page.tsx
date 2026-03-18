@@ -1,4 +1,5 @@
 "use client";
+import PayjpModal from "@/components/PayjpModal";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -9,18 +10,9 @@ function getDaysLeft() {
 }
 
 export default function Home() {
-  const [loading, setLoading] = useState(false);
-
-  async function startCheckout() {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/stripe/checkout", { method: "POST" });
-      const data = await res.json();
-      if (data.url) window.location.href = data.url;
-    } catch {
-      setLoading(false);
-    }
-  }
+  const [showPayjp, setShowPayjp] = useState(false);
+  const loading = false;
+  const startCheckout = () => setShowPayjp(true);
 
   const daysLeft = getDaysLeft();
 
@@ -196,7 +188,7 @@ export default function Home() {
       {/* Final CTA */}
       <section className="bg-gray-950 py-16 px-4 text-center">
         <div className="bg-red-900 border border-red-700 rounded-2xl max-w-2xl mx-auto p-8">
-          <div className="text-red-300 font-bold text-lg mb-3">⏰ 締め切りまであと6日</div>
+          <div className="text-red-300 font-bold text-lg mb-3">{daysLeft > 0 ? `⏰ 締め切りまであと${daysLeft}日` : "📋 確定申告はAIでスムーズに"}</div>
           <h2 className="text-2xl font-black mb-4">今年の確定申告、AIで完成させよう</h2>
           <p className="text-gray-300 mb-6">¥2,980で税理士いらず。14日間返金保証付き。</p>
           <button
@@ -209,17 +201,42 @@ export default function Home() {
         </div>
       </section>
 
+      {/* X Share */}
+      <section className="bg-gray-900 py-8 px-4 text-center">
+        <a
+          href={"https://twitter.com/intent/tweet?text=" + encodeURIComponent("確定申告AIで今年の確定申告が30分で完成した🎉 税理士費用¥50,000不要！AIが経費の最適化・申告書の書き方を完全サポート → https://kakutei-shinkoku-ai.vercel.app #確定申告 #フリーランス #節税")}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 bg-black hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-xl text-sm transition-colors"
+        >
+          <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+          Xで共有する
+        </a>
+      </section>
+
       {/* Footer */}
       <footer className="bg-gray-950 border-t border-gray-800 py-8 px-4 text-center text-gray-500 text-xs">
         <p>© 2026 確定申告AI</p>
         <p className="mt-2">
           <Link href="/legal" className="hover:text-gray-300 underline">特定商取引法に基づく表記</Link>
           {" ｜ "}
+          <Link href="/terms" className="hover:text-gray-300 underline">利用規約</Link>
+          {" ｜ "}
           <Link href="/privacy" className="hover:text-gray-300 underline">プライバシーポリシー</Link>
           {" ｜ "}
           <span>本サービスは情報提供を目的としており、税理士による税務相談の代替ではありません</span>
         </p>
       </footer>
+      {showPayjp && (
+        <PayjpModal
+          publicKey={process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY!}
+          planLabel="確定申告AIプレミアム ¥2,980（買い切り）"
+          onSuccess={() => setShowPayjp(false)}
+          onClose={() => setShowPayjp(false)}
+        />
+      )}
     </main>
   );
 }
