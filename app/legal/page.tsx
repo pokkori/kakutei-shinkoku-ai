@@ -9,11 +9,11 @@ export default function LegalPage() {
         <table className="w-full text-sm text-gray-300 border-collapse">
           <tbody>
             {[
-              ["販売業者", "ポッコリラボ"],
+              ["販売業者", "新美諭"],
               ["代表者", "ポッコリラボ"],
               ["所在地", "請求があれば遅滞なく開示します"],
-              ["電話番号", "請求があれば遅滞なく開示します"],
-              ["メールアドレス", "X(Twitter) @levona_design へのDM"],
+              ["電話番号", "090-6093-5290"],
+              ["メールアドレス", "levonadesign@gmail.com（X: @levona_design）"],
               ["販売価格", "¥2,980（税込）"],
               ["支払方法", "クレジットカード / Apple Pay / Google Pay"],
               ["支払時期", "ご注文時にお支払いいただきます"],
