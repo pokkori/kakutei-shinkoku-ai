@@ -52,11 +52,20 @@ export default function ToolPage() {
     setForm((f) => ({ ...f, [key]: value }));
   }
 
+  const [streamingText, setStreamingText] = useState("");
+
+  function extractSection(text: string, key: string): string {
+    const regex = new RegExp(`===${key}===([\\s\\S]*?)(?:===\\w+===|DONE:|$)`);
+    const match = text.match(regex);
+    return match ? match[1].trim() : "";
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!form.occupation || !form.revenue) return;
     setLoading(true);
     setResult(null);
+    setStreamingText("");
     setErrorMsg(null);
     try {
       const res = await fetch("/api/analyze", {
@@ -69,13 +78,37 @@ export default function ToolPage() {
         setLoading(false);
         return;
       }
-      const data = await res.json();
-      if (data.result) {
-        setResult(data.result);
-        if (data.remaining !== undefined) setRemaining(data.remaining);
-      } else if (data.error) {
-        setErrorMsg("AI分析中にエラーが発生しました。しばらく待ってから再試行してください。");
+      if (!res.body) throw new Error("no body");
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let accumulated = "";
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        accumulated += chunk;
+        setStreamingText(accumulated);
+        if (accumulated.includes("DONE:")) {
+          const doneMatch = accumulated.match(/DONE:(.+)/);
+          if (doneMatch) {
+            try {
+              const meta = JSON.parse(doneMatch[1]);
+              if (meta.remaining !== undefined && meta.remaining !== null) setRemaining(meta.remaining);
+            } catch { /* noop */ }
+          }
+          accumulated = accumulated.replace(/\nDONE:.+/, "");
+          break;
+        }
       }
+      const parsed: Result = {
+        tax: extractSection(accumulated, "TAX"),
+        expenses: extractSection(accumulated, "EXPENSES"),
+        procedure: extractSection(accumulated, "PROCEDURE"),
+        savings: extractSection(accumulated, "SAVINGS"),
+        faq: extractSection(accumulated, "FAQ"),
+      };
+      setResult(parsed);
+      setStreamingText("");
     } catch {
       setErrorMsg("通信エラーが発生しました。インターネット接続を確認して再試行してください。");
     }
@@ -284,10 +317,24 @@ export default function ToolPage() {
           </div>
         )}
 
+        {/* Streaming preview */}
+        {loading && streamingText && (
+          <div className="mt-8 bg-gray-900 rounded-2xl p-6">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-green-500" />
+              <span className="text-green-400 text-sm font-bold">AI分析中...</span>
+            </div>
+            <div className="text-gray-400 text-xs font-mono whitespace-pre-wrap line-clamp-10 overflow-hidden">{streamingText.slice(-600)}</div>
+          </div>
+        )}
+
         {/* Results */}
         {result && (
           <div className="mt-10">
-            <h2 className="text-xl font-black mb-4 text-white">📊 AI分析結果</h2>
+            <h2 className="text-xl font-black mb-4 text-white flex items-center gap-2">
+              <svg viewBox="0 0 24 24" width="22" height="22" className="text-green-400" aria-hidden="true"><rect x="2" y="12" width="4" height="10" fill="currentColor"/><rect x="9" y="7" width="4" height="15" fill="currentColor"/><rect x="16" y="2" width="4" height="20" fill="currentColor"/></svg>
+              AI分析結果
+            </h2>
             {/* Tabs */}
             <div className="flex overflow-x-auto gap-2 mb-4 pb-1">
               {TABS.map((tab) => (
@@ -336,7 +383,9 @@ export default function ToolPage() {
       {showPaywall && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-gray-900 border border-gray-700 rounded-2xl p-8 max-w-md w-full text-center">
-            <div className="text-4xl mb-4">🔒</div>
+            <div className="flex justify-center mb-4">
+              <svg viewBox="0 0 48 48" width="48" height="48" className="text-green-400" aria-hidden="true"><rect x="14" y="22" width="20" height="18" rx="3" fill="currentColor"/><path d="M16 22V16a8 8 0 1 1 16 0v6" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round"/><circle cx="24" cy="31" r="2.5" fill="white"/></svg>
+            </div>
             <h2 className="text-xl font-black mb-3">無料回数を使い切りました</h2>
             <p className="text-gray-400 text-sm mb-6">
               プレミアム版（¥2,980/年）にアップグレードすると、
