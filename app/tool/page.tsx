@@ -22,6 +22,7 @@ export default function ToolPage() {
   const [showPaywall, setShowPaywall] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const [form, setForm] = useState({
     reportType: "white",
@@ -56,6 +57,7 @@ export default function ToolPage() {
     if (!form.occupation || !form.revenue) return;
     setLoading(true);
     setResult(null);
+    setErrorMsg(null);
     try {
       const res = await fetch("/api/analyze", {
         method: "POST",
@@ -71,9 +73,11 @@ export default function ToolPage() {
       if (data.result) {
         setResult(data.result);
         if (data.remaining !== undefined) setRemaining(data.remaining);
+      } else if (data.error) {
+        setErrorMsg("AI分析中にエラーが発生しました。しばらく待ってから再試行してください。");
       }
     } catch {
-      // ignore
+      setErrorMsg("通信エラーが発生しました。インターネット接続を確認して再試行してください。");
     }
     setLoading(false);
   }
@@ -107,6 +111,7 @@ export default function ToolPage() {
         {!isPremium && (
           <button
             onClick={startCheckout}
+            aria-label="プレミアムプランにアップグレードする"
             className="bg-green-500 hover:bg-green-400 text-black text-sm font-bold px-4 py-2 rounded-lg transition"
           >
             ¥2,980でアップグレード
@@ -266,11 +271,18 @@ export default function ToolPage() {
           <button
             type="submit"
             disabled={loading || !form.occupation || !form.revenue}
+            aria-label="AIで確定申告を分析する"
             className="w-full bg-green-500 hover:bg-green-400 text-black font-black text-lg py-4 rounded-xl transition disabled:opacity-50"
           >
             {loading ? "AI分析中...（30秒ほどお待ちください）" : "AIで確定申告を分析する →"}
           </button>
         </form>
+
+        {errorMsg && (
+          <div role="alert" className="mt-4 bg-red-900 border border-red-700 rounded-xl p-4 text-red-200 text-sm">
+            {errorMsg}
+          </div>
+        )}
 
         {/* Results */}
         {result && (
@@ -291,19 +303,30 @@ export default function ToolPage() {
             <div className="bg-gray-900 rounded-2xl p-6 min-h-48">
               {renderContent(result[activeTab])}
             </div>
-            <div className="flex gap-3 mt-4">
+            <div className="flex gap-3 mt-4 flex-wrap">
               <button
                 onClick={() => { navigator.clipboard.writeText(result[activeTab]); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+                aria-label="このタブの内容をクリップボードにコピー"
                 className="flex-1 bg-gray-700 hover:bg-gray-600 text-white text-sm font-bold py-3 rounded-xl transition"
               >
-                {copied ? "コピーしました！" : "📋 このタブをコピー"}
+                {copied ? "コピーしました！" : "このタブをコピー"}
               </button>
               <button
                 onClick={() => window.print()}
+                aria-label="印刷する"
                 className="flex-1 bg-gray-700 hover:bg-gray-600 text-white text-sm font-bold py-3 rounded-xl transition"
               >
-                🖨️ 印刷する
+                印刷する
               </button>
+              <a
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("確定申告AIで節税ポイントと申告手順をAIが完全サポート！税理士費用¥50,000不要で30分で完成 → https://kakutei-shinkoku-ai.vercel.app #確定申告 #フリーランス #節税")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="分析結果をXでシェアする"
+                className="flex-1 bg-black hover:bg-gray-900 text-white text-sm font-bold py-3 rounded-xl transition text-center"
+              >
+                Xでシェア
+              </a>
             </div>
           </div>
         )}
