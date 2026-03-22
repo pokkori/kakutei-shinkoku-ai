@@ -155,7 +155,7 @@ export default function ToolPage() {
 
       {/* Urgency */}
       <div className="bg-red-700 text-white text-center py-2 px-4 text-xs font-bold">
-        ⚠️ 確定申告締め切り：2026年3月15日（日）まであと6日
+        注意: 確定申告締め切り：2026年3月15日（日）まであと6日
       </div>
 
       <div className="max-w-2xl mx-auto px-4 pt-8">

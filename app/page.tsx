@@ -21,7 +21,7 @@ export default function Home() {
       {/* Urgency Banner */}
       {daysLeft > 0 && (
         <div className="bg-red-600 text-white text-center py-3 px-4 text-sm font-bold">
-          ⚠️ 2026年3月15日（日）締め切りまであと{daysLeft}日！ まだ間に合います →{" "}
+          注意: 2026年3月15日（日）締め切りまであと{daysLeft}日！ まだ間に合います →{" "}
           <button onClick={startCheckout} className="underline">今すぐAIで完成させる</button>
         </div>
       )}
@@ -29,7 +29,7 @@ export default function Home() {
       {/* Hero */}
       <section className="bg-gray-950 pt-20 pb-16 px-4 text-center">
         <div className="inline-block bg-green-900 text-green-300 text-xs font-bold px-3 py-1 rounded-full mb-6">
-          🤖 AI確定申告アシスタント
+          AI確定申告アシスタント
         </div>
         <h1 className="text-4xl md:text-6xl font-black mb-6 leading-tight">
           フリーランスの確定申告、<br />
@@ -65,12 +65,12 @@ export default function Home() {
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { icon: "😰", title: "申告書の書き方がわからない", desc: "どの欄に何を書くのか、どの書類が必要なのかさっぱり…" },
-              { icon: "💸", title: "経費の計上漏れが怖い", desc: "どこまで経費にできるのか判断できず、結果的に税金を多く払いすぎている" },
-              { icon: "😓", title: "税理士に頼む余裕がない", desc: "税理士への依頼は¥50,000〜¥150,000。フリーランス1年目にはきつすぎる" },
+              { title: "申告書の書き方がわからない", desc: "どの欄に何を書くのか、どの書類が必要なのかさっぱり…" },
+              { title: "経費の計上漏れが怖い", desc: "どこまで経費にできるのか判断できず、結果的に税金を多く払いすぎている" },
+              { title: "税理士に頼む余裕がない", desc: "税理士への依頼は¥50,000〜¥150,000。フリーランス1年目にはきつすぎる" },
             ].map((item) => (
               <div key={item.title} className="bg-gray-800 rounded-2xl p-6">
-                <div className="text-4xl mb-3">{item.icon}</div>
+                <div className="w-10 h-1 bg-red-500 rounded mb-3" />
                 <h3 className="font-bold text-lg mb-2 text-red-300">{item.title}</h3>
                 <p className="text-gray-400 text-sm">{item.desc}</p>
               </div>
@@ -110,14 +110,14 @@ export default function Home() {
           <h2 className="text-2xl font-bold text-center mb-10">AIが分析・サポートする内容</h2>
           <div className="grid md:grid-cols-2 gap-4">
             {[
-              "📊 予想納税額・還付金の計算",
-              "💡 経費の最適化アドバイス（見落とし経費の指摘）",
-              "📋 青色申告・白色申告どちらが得か診断",
-              "🏥 医療費控除・ふるさと納税の効果計算",
-              "📱 e-Tax（電子申告）の手順完全ガイド",
-              "📝 申告書の各欄の書き方解説",
-              "⚠️ 税務調査リスクが高い申告パターンの注意",
-              "🔄 来年からの節税対策アドバイス",
+              "予想納税額・還付金の計算",
+              "経費の最適化アドバイス（見落とし経費の指摘）",
+              "青色申告・白色申告どちらが得か診断",
+              "医療費控除・ふるさと納税の効果計算",
+              "e-Tax（電子申告）の手順完全ガイド",
+              "申告書の各欄の書き方解説",
+              "税務調査リスクが高い申告パターンの注意",
+              "来年からの節税対策アドバイス",
             ].map((f) => (
               <div key={f} className="bg-gray-800 rounded-xl px-5 py-4 text-sm text-gray-200 flex items-center gap-2">
                 {f}
@@ -188,7 +188,7 @@ export default function Home() {
       {/* Final CTA */}
       <section className="bg-gray-950 py-16 px-4 text-center">
         <div className="bg-red-900 border border-red-700 rounded-2xl max-w-2xl mx-auto p-8">
-          <div className="text-red-300 font-bold text-lg mb-3">{daysLeft > 0 ? `⏰ 締め切りまであと${daysLeft}日` : "📋 確定申告はAIでスムーズに"}</div>
+          <div className="text-red-300 font-bold text-lg mb-3">{daysLeft > 0 ? `締め切りまであと${daysLeft}日` : "確定申告はAIでスムーズに"}</div>
           <h2 className="text-2xl font-black mb-4">今年の確定申告、AIで完成させよう</h2>
           <p className="text-gray-300 mb-6">¥2,980で税理士いらず。14日間返金保証付き。</p>
           <button
@@ -204,7 +204,7 @@ export default function Home() {
       {/* X Share */}
       <section className="bg-gray-900 py-8 px-4 text-center">
         <a
-          href={"https://twitter.com/intent/tweet?text=" + encodeURIComponent("確定申告AIで今年の確定申告が30分で完成した🎉 税理士費用¥50,000不要！AIが経費の最適化・申告書の書き方を完全サポート → https://kakutei-shinkoku-ai.vercel.app #確定申告 #フリーランス #節税")}
+          href={"https://twitter.com/intent/tweet?text=" + encodeURIComponent("確定申告AIで今年の確定申告が30分で完成！税理士費用¥50,000不要！AIが経費の最適化・申告書の書き方を完全サポート → https://kakutei-shinkoku-ai.vercel.app #確定申告 #フリーランス #節税")}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 bg-black hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-xl text-sm transition-colors"
@@ -233,7 +233,7 @@ export default function Home() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl text-center">
             <button onClick={() => setShowPayjp(false)} className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
-            <div className="text-3xl mb-3">📊</div>
+            <svg viewBox="0 0 48 48" width="36" height="36" className="text-green-400 mb-3 mx-auto" aria-hidden="true"><rect x="2" y="28" width="8" height="16" fill="currentColor"/><rect x="14" y="18" width="8" height="26" fill="currentColor"/><rect x="26" y="8" width="8" height="36" fill="currentColor"/><rect x="38" y="2" width="8" height="42" fill="currentColor"/></svg>
             <h2 className="text-lg font-bold mb-2">確定申告AIプレミアム</h2>
             <p className="text-sm text-gray-500 mb-4">¥2,980（買い切り）・14日間返金保証</p>
             <KomojuButton planId="standard" planLabel="今すぐ購入して申告を完成させる →"

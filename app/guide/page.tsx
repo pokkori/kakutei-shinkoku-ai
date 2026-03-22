@@ -378,7 +378,7 @@ export default function GuidePage() {
                 className="bg-gray-800 rounded-xl px-5 py-4"
               >
                 <div className="flex items-start gap-3">
-                  <span className="text-green-400 font-bold text-sm shrink-0 mt-0.5">✅</span>
+                  <span className="text-green-400 font-bold text-sm shrink-0 mt-0.5">OK</span>
                   <div>
                     <div className="font-bold text-white text-sm mb-1">{exp.name}</div>
                     <div className="text-gray-400 text-xs leading-relaxed">{exp.detail}</div>
@@ -437,7 +437,7 @@ export default function GuidePage() {
                   <ul className="space-y-1">
                     {s.tips.map((tip) => (
                       <li key={tip} className="text-xs text-green-300 flex items-start gap-2">
-                        <span className="shrink-0 mt-0.5">💡</span>
+                        <span className="shrink-0 mt-0.5 text-green-300 font-bold">*</span>
                         <span>{tip}</span>
                       </li>
                     ))}
