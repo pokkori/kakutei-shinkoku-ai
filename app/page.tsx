@@ -22,12 +22,12 @@ export default function Home() {
       {daysLeft > 0 && (
         <div className="bg-red-600 text-white text-center py-3 px-4 text-sm font-bold">
           注意: 2026年3月15日（日）締め切りまであと{daysLeft}日！ まだ間に合います →{" "}
-          <button onClick={startCheckout} className="underline">今すぐAIで完成させる</button>
+          <button type="button" onClick={startCheckout} aria-label="今すぐ確定申告AIで確定申告を完成させる" className="underline">今すぐAIで完成させる</button>
         </div>
       )}
 
       {/* Hero */}
-      <section className="bg-gray-950 pt-20 pb-16 px-4 text-center">
+      <section className="bg-gray-950 pt-20 pb-16 px-4 text-center" aria-label="メインヒーロー">
         <div className="inline-block bg-green-900 text-green-300 text-xs font-bold px-3 py-1 rounded-full mb-6">
           AI確定申告アシスタント
         </div>
@@ -41,8 +41,10 @@ export default function Home() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
           <button
+            type="button"
             onClick={startCheckout}
             disabled={loading}
+            aria-label="¥2,980で確定申告AIプレミアムを購入して確定申告を完成させる"
             className="bg-green-500 hover:bg-green-400 text-black font-black text-lg px-10 py-4 rounded-xl transition disabled:opacity-60"
           >
             {loading ? "処理中..." : "¥2,980で確定申告を完成させる →"}
@@ -154,8 +156,10 @@ export default function Home() {
             </div>
           </div>
           <button
+            type="button"
             onClick={startCheckout}
             disabled={loading}
+            aria-label="今すぐ¥2,980で確定申告AIプレミアムを始める"
             className="mt-10 bg-green-500 hover:bg-green-400 text-black font-black text-xl px-12 py-5 rounded-xl transition disabled:opacity-60 w-full max-w-md"
           >
             {loading ? "処理中..." : "今すぐ¥2,980で始める →"}
@@ -192,8 +196,10 @@ export default function Home() {
           <h2 className="text-2xl font-black mb-4">今年の確定申告、AIで完成させよう</h2>
           <p className="text-gray-300 mb-6">¥2,980で税理士いらず。14日間返金保証付き。</p>
           <button
+            type="button"
             onClick={startCheckout}
             disabled={loading}
+            aria-label="今すぐ確定申告AIプレミアムを始める"
             className="bg-green-500 hover:bg-green-400 text-black font-black text-lg px-10 py-4 rounded-xl transition disabled:opacity-60"
           >
             {loading ? "処理中..." : "今すぐ始める →"}
@@ -207,6 +213,7 @@ export default function Home() {
           href={"https://twitter.com/intent/tweet?text=" + encodeURIComponent("確定申告AIで今年の確定申告が30分で完成！税理士費用¥50,000不要！AIが経費の最適化・申告書の書き方を完全サポート → https://kakutei-shinkoku-ai.vercel.app #確定申告 #フリーランス #節税")}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="確定申告AIをXでシェアする"
           className="inline-flex items-center gap-2 bg-black hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-xl text-sm transition-colors"
         >
           <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
@@ -232,7 +239,7 @@ export default function Home() {
       {showPayjp && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl text-center">
-            <button onClick={() => setShowPayjp(false)} className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
+            <button type="button" onClick={() => setShowPayjp(false)} aria-label="決済モーダルを閉じる" className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
             <svg viewBox="0 0 48 48" width="36" height="36" className="text-green-400 mb-3 mx-auto" aria-hidden="true"><rect x="2" y="28" width="8" height="16" fill="currentColor"/><rect x="14" y="18" width="8" height="26" fill="currentColor"/><rect x="26" y="8" width="8" height="36" fill="currentColor"/><rect x="38" y="2" width="8" height="42" fill="currentColor"/></svg>
             <h2 className="text-lg font-bold mb-2">確定申告AIプレミアム</h2>
             <p className="text-sm text-gray-500 mb-4">¥2,980（買い切り）・14日間返金保証</p>

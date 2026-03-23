@@ -196,6 +196,7 @@ export default function ToolPage() {
               value={form.occupation}
               onChange={(e) => setField("occupation", e.target.value)}
               placeholder="例: Webデザイナー、エンジニア、ライター、YouTuber"
+              aria-label="職業・業種を入力（例: Webデザイナー、エンジニア）"
               className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500"
               required
             />
@@ -211,6 +212,7 @@ export default function ToolPage() {
                   value={form.revenue}
                   onChange={(e) => setField("revenue", e.target.value)}
                   placeholder="例: 350"
+                  aria-label="年間売上（収入）を万円単位で入力"
                   className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500"
                   required
                 />
@@ -225,6 +227,7 @@ export default function ToolPage() {
                   value={form.totalExpenses}
                   onChange={(e) => setField("totalExpenses", e.target.value)}
                   placeholder="例: 80"
+                  aria-label="年間経費の合計を万円単位で入力"
                   className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500"
                 />
                 <span className="absolute right-3 top-3.5 text-gray-500 text-sm">万円</span>
@@ -239,6 +242,7 @@ export default function ToolPage() {
               value={form.expenseDetails}
               onChange={(e) => setField("expenseDetails", e.target.value)}
               placeholder="例: 通信費3万円、書籍代2万円、交通費5万円、PC購入15万円、自宅家賃の30%按分"
+              aria-label="主な経費の内訳を入力（通信費・書籍代・交通費など）"
               className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500 h-20 resize-none"
             />
           </div>
@@ -297,6 +301,7 @@ export default function ToolPage() {
               value={form.other}
               onChange={(e) => setField("other", e.target.value)}
               placeholder="例: 昨年まで会社員で今年から個人事業主になった / 副業収入が20万を超えた / 海外クライアントからの収入がある"
+              aria-label="その他の相談事項・気になることを入力"
               className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500 h-20 resize-none"
             />
           </div>
@@ -340,7 +345,10 @@ export default function ToolPage() {
               {TABS.map((tab) => (
                 <button
                   key={tab.key}
+                  type="button"
                   onClick={() => setActiveTab(tab.key)}
+                  aria-label={`${tab.label}タブを表示`}
+                  aria-pressed={activeTab === tab.key}
                   className={`shrink-0 px-4 py-2 rounded-lg text-sm font-bold transition ${activeTab === tab.key ? "bg-green-500 text-black" : "bg-gray-800 text-gray-300 hover:bg-gray-700"}`}
                 >
                   {tab.label}
