@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { updateStreak } from "@/lib/streak";
 
 const HISTORY_KEY = "kakuteishinkoku_history";
 
@@ -133,6 +134,7 @@ export default function ToolPage() {
         faq: extractSection(accumulated, "FAQ"),
       };
       setResult(parsed);
+      updateStreak("kakutei_ai");
       setStreamingText("");
       // 履歴に保存
       const entry: HistoryEntry = {

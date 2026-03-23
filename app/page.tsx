@@ -1,7 +1,8 @@
 "use client";
 import KomojuButton from "@/components/KomojuButton";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { loadStreak, updateStreak } from "@/lib/streak";
 
 const DEADLINE = new Date("2026-03-15T23:59:59+09:00");
 function getDaysLeft() {
@@ -11,8 +12,18 @@ function getDaysLeft() {
 
 export default function Home() {
   const [showPayjp, setShowPayjp] = useState(false);
+  const [streak, setStreak] = useState(0);
   const loading = false;
-  const startCheckout = () => setShowPayjp(true);
+  const startCheckout = () => {
+    const s = updateStreak("kakutei_ai");
+    setStreak(s.count);
+    setShowPayjp(true);
+  };
+
+  useEffect(() => {
+    const s = loadStreak("kakutei_ai");
+    setStreak(s.count);
+  }, []);
 
   const daysLeft = getDaysLeft();
 
@@ -34,6 +45,14 @@ export default function Home() {
         <h1 className="text-4xl md:text-6xl font-black mb-6 leading-tight">
           フリーランスの確定申告、<br />
           <span className="text-green-400">もう怖くない</span>
+          {streak > 0 && (
+            <span
+              className="ml-2 text-xs bg-amber-400 text-amber-900 px-2 py-0.5 rounded-full font-bold align-middle"
+              aria-label={`${streak}日連続利用中`}
+            >
+              {streak}日連続
+            </span>
+          )}
         </h1>
         <p className="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto mb-4">
           年収・経費を入力するだけで、AIが申告書の書き方・節税ポイント・手順を完全解説。<br />
