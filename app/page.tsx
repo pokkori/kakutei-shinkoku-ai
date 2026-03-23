@@ -71,7 +71,7 @@ export default function Home() {
               { title: "経費の計上漏れが怖い", desc: "どこまで経費にできるのか判断できず、結果的に税金を多く払いすぎている" },
               { title: "税理士に頼む余裕がない", desc: "税理士への依頼は¥50,000〜¥150,000。フリーランス1年目にはきつすぎる" },
             ].map((item) => (
-              <div key={item.title} className="bg-gray-800 rounded-2xl p-6">
+              <div key={item.title} className="backdrop-blur-sm bg-white/5 border border-white/10 shadow-lg rounded-2xl p-6">
                 <div className="w-10 h-1 bg-red-500 rounded mb-3" />
                 <h3 className="font-bold text-lg mb-2 text-red-300">{item.title}</h3>
                 <p className="text-gray-400 text-sm">{item.desc}</p>
@@ -121,7 +121,7 @@ export default function Home() {
               "税務調査リスクが高い申告パターンの注意",
               "来年からの節税対策アドバイス",
             ].map((f) => (
-              <div key={f} className="bg-gray-800 rounded-xl px-5 py-4 text-sm text-gray-200 flex items-center gap-2">
+              <div key={f} className="backdrop-blur-sm bg-white/5 border border-white/10 shadow-lg rounded-xl px-5 py-4 text-sm text-gray-200 flex items-center gap-2">
                 {f}
               </div>
             ))}
@@ -134,7 +134,7 @@ export default function Home() {
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-2xl font-bold mb-10">料金</h2>
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700">
+            <div className="backdrop-blur-sm bg-white/5 border border-white/10 shadow-lg rounded-2xl p-8">
               <div className="text-gray-400 text-sm mb-2">税理士に依頼する場合</div>
               <div className="text-4xl font-black text-gray-300 mb-2">¥50,000〜</div>
               <div className="text-gray-500 text-sm">¥150,000かかることも</div>
@@ -144,7 +144,7 @@ export default function Home() {
                 <li>✗ 追加費用が発生することも</li>
               </ul>
             </div>
-            <div className="bg-green-900 rounded-2xl p-8 border-2 border-green-500">
+            <div className="backdrop-blur-sm bg-green-900/80 border-2 border-green-500/60 shadow-lg rounded-2xl p-8">
               <div className="text-green-300 text-sm font-bold mb-2">確定申告AIを使う場合</div>
               <div className="text-4xl font-black text-green-400 mb-2">¥2,980</div>
               <div className="text-green-300 text-sm">年間（一回払い）</div>
@@ -180,7 +180,7 @@ export default function Home() {
               { name: "Mさん（エンジニア・副業歴3年）", text: "経費の入力漏れを指摘してもらい、結果的に¥30,000以上節税できました。交通費と書籍代を忘れてたみたい。" },
               { name: "Tさん（イラストレーター・個人事業主）", text: "青色申告に切り替えるべきか悩んでいたのですが、AIが私の状況で¥65万の特別控除が使えると教えてくれました。" },
             ].map((t) => (
-              <div key={t.name} className="bg-gray-800 rounded-2xl p-6">
+              <div key={t.name} className="backdrop-blur-sm bg-white/5 border border-white/10 shadow-lg rounded-2xl p-6">
                 <p className="text-gray-200 text-sm mb-4">「{t.text}」</p>
                 <p className="text-green-400 text-xs font-bold">{t.name}</p>
               </div>
@@ -191,7 +191,7 @@ export default function Home() {
 
       {/* Final CTA */}
       <section className="bg-gray-950 py-16 px-4 text-center">
-        <div className="bg-red-900 border border-red-700 rounded-2xl max-w-2xl mx-auto p-8">
+        <div className="backdrop-blur-sm bg-red-900/80 border border-red-500/40 shadow-lg rounded-2xl max-w-2xl mx-auto p-8">
           <div className="text-red-300 font-bold text-lg mb-3">{daysLeft > 0 ? `締め切りまであと${daysLeft}日` : "確定申告はAIでスムーズに"}</div>
           <h2 className="text-2xl font-black mb-4">今年の確定申告、AIで完成させよう</h2>
           <p className="text-gray-300 mb-6">¥2,980で税理士いらず。14日間返金保証付き。</p>
@@ -238,7 +238,7 @@ export default function Home() {
       </footer>
       {showPayjp && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
-          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl text-center">
+          <div className="backdrop-blur-sm bg-white/90 border border-white/40 shadow-xl rounded-2xl p-6 max-w-sm w-full text-center">
             <button type="button" onClick={() => setShowPayjp(false)} aria-label="決済モーダルを閉じる" className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
             <svg viewBox="0 0 48 48" width="36" height="36" className="text-green-400 mb-3 mx-auto" aria-hidden="true"><rect x="2" y="28" width="8" height="16" fill="currentColor"/><rect x="14" y="18" width="8" height="26" fill="currentColor"/><rect x="26" y="8" width="8" height="36" fill="currentColor"/><rect x="38" y="2" width="8" height="42" fill="currentColor"/></svg>
             <h2 className="text-lg font-bold mb-2">確定申告AIプレミアム</h2>

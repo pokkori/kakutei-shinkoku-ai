@@ -2,6 +2,28 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
+const HISTORY_KEY = "kakuteishinkoku_history";
+
+interface HistoryEntry {
+  text: string;
+  date: string;
+}
+
+function loadHistory(): HistoryEntry[] {
+  if (typeof window === "undefined") return [];
+  try {
+    return JSON.parse(localStorage.getItem(HISTORY_KEY) ?? "[]") ?? [];
+  } catch {
+    return [];
+  }
+}
+
+function saveHistory(entries: HistoryEntry[]) {
+  try {
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(entries.slice(0, 5)));
+  } catch { /* noop */ }
+}
+
 const TABS = [
   { key: "tax", label: "納税額予測" },
   { key: "expenses", label: "経費最適化" },
@@ -16,6 +38,8 @@ type Result = Record<TabKey, string>;
 export default function ToolPage() {
   const [isPremium, setIsPremium] = useState(false);
   const [remaining, setRemaining] = useState(3);
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<Result | null>(null);
   const [activeTab, setActiveTab] = useState<TabKey>("tax");
@@ -46,6 +70,7 @@ export default function ToolPage() {
         setIsPremium(d.premium);
         if (d.remaining !== undefined) setRemaining(d.remaining);
       });
+    setHistory(loadHistory());
   }, []);
 
   function setField(key: string, value: string | boolean) {
@@ -109,6 +134,14 @@ export default function ToolPage() {
       };
       setResult(parsed);
       setStreamingText("");
+      // 履歴に保存
+      const entry: HistoryEntry = {
+        text: `${form.occupation} / 売上${form.revenue}万円` + (form.totalExpenses ? ` / 経費${form.totalExpenses}万円` : ""),
+        date: new Date().toLocaleString("ja-JP", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }),
+      };
+      const updated = [entry, ...loadHistory()].slice(0, 5);
+      saveHistory(updated);
+      setHistory(updated);
     } catch {
       setErrorMsg("通信エラーが発生しました。インターネット接続を確認して再試行してください。");
     }
@@ -167,7 +200,35 @@ export default function ToolPage() {
           </div>
         )}
 
-        <h1 className="text-2xl font-black mb-6 text-white">確定申告AI診断</h1>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-black text-white">確定申告AI診断</h1>
+          {history.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowHistory((v) => !v)}
+              aria-label="過去の相談履歴を表示・非表示"
+              aria-expanded={showHistory}
+              className="text-xs text-green-400 border border-green-700 px-3 py-1.5 rounded-lg hover:bg-green-900 transition"
+            >
+              {showHistory ? "履歴を閉じる" : `履歴 ${history.length}件`}
+            </button>
+          )}
+        </div>
+
+        {/* 相談履歴パネル */}
+        {showHistory && history.length > 0 && (
+          <div className="mb-6 backdrop-blur-sm bg-white/5 border border-white/10 shadow-lg rounded-2xl p-4" aria-label="過去の相談履歴">
+            <h2 className="text-sm font-bold text-gray-300 mb-3">過去の相談履歴（最近5件）</h2>
+            <ul className="space-y-2">
+              {history.map((entry, i) => (
+                <li key={i} className="flex items-start justify-between gap-3 text-xs bg-gray-800/60 rounded-lg px-3 py-2">
+                  <span className="text-gray-200 truncate flex-1">{entry.text.slice(0, 50)}{entry.text.length > 50 ? "…" : ""}</span>
+                  <span className="text-gray-500 shrink-0">{entry.date}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* 申告の種類 */}
@@ -252,28 +313,28 @@ export default function ToolPage() {
             <div>
               <label className="block text-sm font-bold text-gray-300 mb-2">社会保険料支払い</label>
               <div className="relative">
-                <input type="number" value={form.socialInsurance} onChange={(e) => setField("socialInsurance", e.target.value)} placeholder="例: 20" className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500" />
+                <input type="number" value={form.socialInsurance} onChange={(e) => setField("socialInsurance", e.target.value)} placeholder="例: 20" aria-label="社会保険料支払い額を万円単位で入力" className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500" />
                 <span className="absolute right-3 top-3.5 text-gray-500 text-sm">万円</span>
               </div>
             </div>
             <div>
               <label className="block text-sm font-bold text-gray-300 mb-2">生命保険料控除</label>
               <div className="relative">
-                <input type="number" value={form.lifeInsurance} onChange={(e) => setField("lifeInsurance", e.target.value)} placeholder="例: 4" className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500" />
+                <input type="number" value={form.lifeInsurance} onChange={(e) => setField("lifeInsurance", e.target.value)} placeholder="例: 4" aria-label="生命保険料控除額を万円単位で入力" className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500" />
                 <span className="absolute right-3 top-3.5 text-gray-500 text-sm">万円</span>
               </div>
             </div>
             <div>
               <label className="block text-sm font-bold text-gray-300 mb-2">ふるさと納税額</label>
               <div className="relative">
-                <input type="number" value={form.furusato} onChange={(e) => setField("furusato", e.target.value)} placeholder="例: 5" className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500" />
+                <input type="number" value={form.furusato} onChange={(e) => setField("furusato", e.target.value)} placeholder="例: 5" aria-label="ふるさと納税額を万円単位で入力" className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500" />
                 <span className="absolute right-3 top-3.5 text-gray-500 text-sm">万円</span>
               </div>
             </div>
             <div>
               <label className="block text-sm font-bold text-gray-300 mb-2">医療費（年間）</label>
               <div className="relative">
-                <input type="number" value={form.medical} onChange={(e) => setField("medical", e.target.value)} placeholder="例: 15" className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500" />
+                <input type="number" value={form.medical} onChange={(e) => setField("medical", e.target.value)} placeholder="例: 15" aria-label="年間医療費を万円単位で入力" className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-green-500" />
                 <span className="absolute right-3 top-3.5 text-gray-500 text-sm">万円</span>
               </div>
             </div>
@@ -284,11 +345,11 @@ export default function ToolPage() {
             <label className="block text-sm font-bold text-gray-300 mb-2">家族構成</label>
             <div className="flex gap-4">
               <label className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer">
-                <input type="checkbox" checked={form.hasSpouse} onChange={(e) => setField("hasSpouse", e.target.checked)} className="w-4 h-4 accent-green-500" />
+                <input type="checkbox" checked={form.hasSpouse} onChange={(e) => setField("hasSpouse", e.target.checked)} aria-label="配偶者あり" className="w-4 h-4 accent-green-500" />
                 配偶者あり
               </label>
               <label className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer">
-                <input type="checkbox" checked={form.hasDependents} onChange={(e) => setField("hasDependents", e.target.checked)} className="w-4 h-4 accent-green-500" />
+                <input type="checkbox" checked={form.hasDependents} onChange={(e) => setField("hasDependents", e.target.checked)} aria-label="扶養家族あり" className="w-4 h-4 accent-green-500" />
                 扶養家族あり
               </label>
             </div>
@@ -324,7 +385,7 @@ export default function ToolPage() {
 
         {/* Streaming preview */}
         {loading && streamingText && (
-          <div className="mt-8 bg-gray-900 rounded-2xl p-6">
+          <div className="mt-8 backdrop-blur-sm bg-white/5 border border-white/10 shadow-lg rounded-2xl p-6">
             <div className="flex items-center gap-2 mb-3">
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-green-500" />
               <span className="text-green-400 text-sm font-bold">AI分析中...</span>
@@ -355,7 +416,7 @@ export default function ToolPage() {
                 </button>
               ))}
             </div>
-            <div className="bg-gray-900 rounded-2xl p-6 min-h-48">
+            <div className="backdrop-blur-sm bg-white/5 border border-white/10 shadow-lg rounded-2xl p-6 min-h-48">
               {renderContent(result[activeTab])}
             </div>
             <div className="flex gap-3 mt-4 flex-wrap">
@@ -403,11 +464,12 @@ export default function ToolPage() {
             <button
               onClick={startCheckout}
               disabled={checkoutLoading}
+              aria-label="¥2,980でプレミアムプランにアップグレードする"
               className="w-full bg-green-500 hover:bg-green-400 text-black font-black text-lg py-4 rounded-xl transition disabled:opacity-60 mb-3"
             >
               {checkoutLoading ? "処理中..." : "¥2,980でアップグレードする →"}
             </button>
-            <button onClick={() => setShowPaywall(false)} className="text-gray-500 text-sm hover:text-gray-300 transition">
+            <button onClick={() => setShowPaywall(false)} aria-label="ペイウォールを閉じる" className="text-gray-500 text-sm hover:text-gray-300 transition">
               閉じる
             </button>
           </div>
