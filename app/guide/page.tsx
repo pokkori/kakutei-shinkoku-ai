@@ -275,6 +275,7 @@ export default function GuidePage() {
         </Link>
         <Link
           href="/tool"
+          aria-label="確定申告AIツールで収入・経費をAI分析する"
           className="bg-green-500 hover:bg-green-400 text-black text-sm font-bold px-4 py-2 rounded-lg transition"
         >
           AIで分析する →
