@@ -208,6 +208,65 @@ export default function Home() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section className="bg-gray-950 py-16 px-4" aria-label="よくある質問">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold text-center mb-10">よくある質問</h2>
+          <div className="space-y-4">
+            {[
+              {
+                q: "e-Taxって難しくないですか？",
+                a: "マイナンバーカードとスマホがあれば自宅から10分で電子申告が完了します。AIが手順を1ステップずつ解説するので、初めての方でも迷わず進められます。",
+              },
+              {
+                q: "青色申告と白色申告、どちらを選べばいいですか？",
+                a: "年間売上が150万円以上のフリーランスには青色申告（65万円特別控除）をおすすめします。事前に開業届と青色申告承認申請書を提出する必要がありますが、確定申告AIが適切な選択を診断します。",
+              },
+              {
+                q: "副業収入が20万円を超えた場合、どうすればいいですか？",
+                a: "給与所得者で副業の所得が年間20万円を超えた場合、確定申告が必要です。本業の源泉徴収票と副業の収支を合算して申告します。確定申告AIが副業収入の入力方法と申告書の書き方を案内します。",
+              },
+              {
+                q: "医療費控除はいくら以上から申告できますか？",
+                a: "年間の医療費が10万円（総所得金額の5%が10万円を下回る場合はその金額）を超えた部分が医療費控除の対象です。薬局のレシート・歯科・市販薬（セルフメディケーション税制）なども含まれます。",
+              },
+              {
+                q: "ふるさと納税のワンストップ特例と確定申告の違いは？",
+                a: "ワンストップ特例は給与所得者専用で、他に確定申告が不要な場合に利用できます。フリーランス・個人事業主は確定申告で寄附金控除として申告します。確定申告AIが最適な申告方法を計算します。",
+              },
+              {
+                q: "インボイス制度（適格請求書）の登録は必要ですか？",
+                a: "クライアントが消費税課税事業者の場合、インボイス未登録だと取引を断られるリスクがあります。2023年10月施行の制度で、小規模事業者は「2割特例」（消費税の80%控除）が3年間適用可能です。状況に応じた判断をAIが診断します。",
+              },
+              {
+                q: "家賃の按分はどうやって計算しますか？",
+                a: "自宅兼事務所の家賃は「業務に使用する専有面積 ÷ 全居住面積」で按分できます。例えば50m2の住居で10m2を仕事に使う場合は20%を経費計上可能です。確定申告AIが職業に応じた適切な按分率を提案します。",
+              },
+              {
+                q: "iDeCoに加入すると税金はどれだけ減りますか？",
+                a: "自営業・フリーランスの場合、iDeCoの掛金上限は月68,000円（年816,000円）で、全額が所得控除になります。例えば課税所得300万円（税率10%＋住民税10%）の方が月5万円加入すると、年間約12万円の節税効果があります。",
+              },
+              {
+                q: "税務調査で問題になりやすい経費は何ですか？",
+                a: "プライベートと業務の混在経費（飲食費・旅費・スマホ代）、領収書のない現金支出、家族への給与（青色専従者給与の届出未提出）、実態のない外注費などが税務調査で指摘されやすいです。確定申告AIが申告前にリスクチェックを行います。",
+              },
+              {
+                q: "確定申告の締め切りを過ぎてしまった場合はどうなりますか？",
+                a: "締め切り後でも申告可能ですが、無申告加算税（15〜20%）と延滞税が課される場合があります。ただし還付申告（払いすぎた税金を取り戻す申告）は5年以内ならいつでも可能です。期限後でも確定申告AIが申告書作成をサポートします。",
+              },
+            ].map((item, i) => (
+              <details key={i} className="backdrop-blur-sm bg-white/5 border border-white/10 shadow-lg rounded-2xl p-5 group">
+                <summary className="font-bold text-sm text-white cursor-pointer list-none flex items-center justify-between gap-3">
+                  <span>Q. {item.q}</span>
+                  <svg viewBox="0 0 24 24" width="18" height="18" className="shrink-0 text-green-400 transition-transform group-open:rotate-180" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6"/></svg>
+                </summary>
+                <p className="text-gray-300 text-sm mt-3 leading-relaxed">A. {item.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Final CTA */}
       <section className="bg-gray-950 py-16 px-4 text-center">
         <div className="bg-white/10 backdrop-blur-md border border-red-500/40 shadow-lg rounded-2xl max-w-2xl mx-auto p-8">

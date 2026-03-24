@@ -47,6 +47,7 @@ export default function ToolPage() {
   const [showPaywall, setShowPaywall] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const [form, setForm] = useState({
@@ -90,6 +91,7 @@ export default function ToolPage() {
     e.preventDefault();
     if (!form.occupation || !form.revenue) return;
     setLoading(true);
+    setIsStreaming(false);
     setResult(null);
     setStreamingText("");
     setErrorMsg(null);
@@ -108,6 +110,7 @@ export default function ToolPage() {
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let accumulated = "";
+      setIsStreaming(true);
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
@@ -134,6 +137,7 @@ export default function ToolPage() {
         faq: extractSection(accumulated, "FAQ"),
       };
       setResult(parsed);
+      setIsStreaming(false);
       updateStreak("kakutei_ai");
       setStreamingText("");
       // 履歴に保存
@@ -185,7 +189,7 @@ export default function ToolPage() {
             ¥2,980でアップグレード
           </button>
         )}
-        {isPremium && <span className="text-green-400 text-sm font-bold">✓ プレミアム会員</span>}
+        {isPremium && <span className="text-green-400 text-sm font-bold"> プレミアム会員</span>}
       </header>
 
       {/* Urgency */}
@@ -386,13 +390,26 @@ export default function ToolPage() {
         )}
 
         {/* Streaming preview */}
-        {loading && streamingText && (
+        {loading && (
           <div className="mt-8 backdrop-blur-sm bg-white/5 border border-white/10 shadow-lg rounded-2xl p-6">
             <div className="flex items-center gap-2 mb-3">
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-green-500" />
-              <span className="text-green-400 text-sm font-bold">AI分析中...</span>
+              <span className="text-green-400 text-sm font-bold">
+                {isStreaming ? "AI分析結果を受信中..." : "AIに接続中..."}
+              </span>
+              {isStreaming && (
+                <span className="ml-auto text-gray-500 text-xs">リアルタイム生成中</span>
+              )}
             </div>
-            <div className="text-gray-400 text-xs font-mono whitespace-pre-wrap line-clamp-10 overflow-hidden">{streamingText.slice(-600)}</div>
+            {isStreaming && streamingText ? (
+              <div className="text-gray-300 text-sm whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto">{streamingText.slice(-800)}</div>
+            ) : (
+              <div className="flex gap-1.5 mt-2">
+                <div className="h-2 w-2 rounded-full bg-green-500 animate-bounce" style={{ animationDelay: "0ms" }} />
+                <div className="h-2 w-2 rounded-full bg-green-500 animate-bounce" style={{ animationDelay: "150ms" }} />
+                <div className="h-2 w-2 rounded-full bg-green-500 animate-bounce" style={{ animationDelay: "300ms" }} />
+              </div>
+            )}
           </div>
         )}
 
@@ -437,10 +454,12 @@ export default function ToolPage() {
                 印刷する
               </button>
               <a
-                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("確定申告AIで節税ポイントと申告手順をAIが完全サポート！税理士費用¥50,000不要で30分で完成 → https://kakutei-shinkoku-ai.vercel.app #確定申告 #フリーランス #節税")}`}
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                  `${form.occupation}の確定申告をAIで完全分析！売上${form.revenue}万円の節税ポイントがわかりました。税理士費用¥50,000不要 → https://kakutei-shinkoku-ai.vercel.app #確定申告 #フリーランス #節税`
+                )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="分析結果をXでシェアする"
+                aria-label="AI分析結果をXでシェアする"
                 className="flex-1 bg-black hover:bg-gray-900 text-white text-sm font-bold py-3 rounded-xl transition text-center"
               >
                 Xでシェア
