@@ -28,23 +28,37 @@ export default function Home() {
   const daysLeft = getDaysLeft();
 
   return (
-    <main>
+    <main className="min-h-screen relative overflow-hidden text-white" style={{ background: 'radial-gradient(ellipse at 20% 50%, rgba(16,185,129,0.12) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(245,158,11,0.10) 0%, transparent 50%), radial-gradient(ellipse at 50% 80%, rgba(5,150,105,0.08) 0%, transparent 50%), #0B1120' }}>
+      {/* Floating particles */}
+      <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0">
+        {[
+          { w: 3, h: 3, l: '12%', t: '22%', dur: '7s', op: 0.25 },
+          { w: 2, h: 2, l: '78%', t: '55%', dur: '9s', op: 0.2 },
+          { w: 4, h: 4, l: '55%', t: '12%', dur: '6s', op: 0.2 },
+          { w: 2, h: 2, l: '35%', t: '78%', dur: '8s', op: 0.15 },
+          { w: 3, h: 3, l: '88%', t: '38%', dur: '10s', op: 0.2 },
+        ].map((p, i) => (
+          <div key={i} className="absolute rounded-full animate-pulse" style={{ width: p.w, height: p.h, left: p.l, top: p.t, background: `rgba(34, 197, 94, ${p.op})`, animationDuration: p.dur, filter: 'blur(1px)' }} />
+        ))}
+      </div>
+
       {/* Urgency Banner */}
       {daysLeft > 0 && (
-        <div className="bg-red-600 text-white text-center py-3 px-4 text-sm font-bold">
-          注意: 2026年3月15日（日）締め切りまであと{daysLeft}日！ まだ間に合います →{" "}
-          <button type="button" onClick={startCheckout} aria-label="今すぐ確定申告AIで確定申告を完成させる" className="underline">今すぐAIで完成させる</button>
+        <div className="text-white text-center py-3 px-4 text-sm font-bold relative z-10" style={{ background: 'linear-gradient(135deg, #DC2626, #B91C1C)' }}>
+          <svg className="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          2026年3月15日（日）締め切りまであと{daysLeft}日！ まだ間に合います →{" "}
+          <button type="button" onClick={startCheckout} aria-label="今すぐ確定申告AIで確定申告を完成させる" className="underline font-black">今すぐAIで完成させる</button>
         </div>
       )}
 
       {/* Hero */}
-      <section className="bg-gray-950 pt-20 pb-16 px-4 text-center" aria-label="メインヒーロー">
-        <div className="inline-block bg-green-900 text-green-300 text-xs font-bold px-3 py-1 rounded-full mb-6">
+      <section className="pt-20 pb-16 px-4 text-center relative z-10" aria-label="メインヒーロー">
+        <div className="inline-block text-emerald-300 text-xs font-bold px-4 py-1.5 rounded-full mb-6" style={{ background: 'rgba(34, 197, 94, 0.12)', backdropFilter: 'blur(8px)', border: '1px solid rgba(52, 211, 153, 0.2)' }}>
           AI確定申告アシスタント
         </div>
-        <h1 className="text-4xl md:text-6xl font-black mb-6 leading-tight">
+        <h1 className="text-4xl md:text-6xl font-black mb-6 leading-tight text-white">
           フリーランスの確定申告、<br />
-          <span className="text-green-400">もう怖くない</span>
+          <span style={{ background: 'linear-gradient(135deg, #A7F3D0, #FFFFFF, #FDE68A)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>もう怖くない</span>
           {streak > 0 && (
             <span
               className="ml-2 text-xs bg-amber-400 text-amber-900 px-2 py-0.5 rounded-full font-bold align-middle"
@@ -64,7 +78,8 @@ export default function Home() {
             onClick={startCheckout}
             disabled={loading}
             aria-label="¥2,980で確定申告AIプレミアムを購入して確定申告を完成させる"
-            className="bg-green-500 hover:bg-green-400 text-black font-black text-lg px-10 py-4 rounded-xl transition disabled:opacity-60"
+            className="text-white font-black text-lg px-10 py-4 rounded-full transition-all duration-300 ease-out hover:scale-105 active:scale-95 disabled:opacity-60 min-h-[52px]"
+            style={{ background: 'linear-gradient(135deg, #10B981, #F59E0B)', boxShadow: '0 0 30px rgba(16,185,129,0.4), 0 0 60px rgba(245,158,11,0.15)' }}
           >
             {loading ? "処理中..." : "¥2,980で確定申告を完成させる →"}
           </button>
@@ -79,7 +94,7 @@ export default function Home() {
       </section>
 
       {/* Pain Points */}
-      <section className="bg-gray-900 py-16 px-4">
+      <section className="py-16 px-4 relative z-10" style={{ background: 'rgba(15, 15, 26, 0.6)' }}>
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-bold text-center mb-10 text-gray-100">
             こんな悩みを抱えていませんか？
@@ -104,7 +119,7 @@ export default function Home() {
       </section>
 
       {/* How it works */}
-      <section className="bg-gray-950 py-16 px-4">
+      <section className="py-16 px-4 relative z-10">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-2xl font-bold text-center mb-10">使い方は3ステップ</h2>
           <div className="space-y-6">
@@ -126,7 +141,7 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section className="bg-gray-900 py-16 px-4">
+      <section className="py-16 px-4 relative z-10" style={{ background: 'rgba(15, 15, 26, 0.6)' }}>
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-bold text-center mb-10">AIが分析・サポートする内容</h2>
           <div className="grid md:grid-cols-2 gap-4">
@@ -149,7 +164,7 @@ export default function Home() {
       </section>
 
       {/* Pricing */}
-      <section className="bg-gray-950 py-16 px-4">
+      <section className="py-16 px-4 relative z-10">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-2xl font-bold mb-10">料金</h2>
           <div className="grid md:grid-cols-2 gap-6">
@@ -179,7 +194,8 @@ export default function Home() {
             onClick={startCheckout}
             disabled={loading}
             aria-label="今すぐ¥2,980で確定申告AIプレミアムを始める"
-            className="mt-10 bg-green-500 hover:bg-green-400 text-black font-black text-xl px-12 py-5 rounded-xl transition disabled:opacity-60 w-full max-w-md"
+            className="mt-10 text-white font-black text-xl px-12 py-5 rounded-full transition-all duration-300 ease-out hover:scale-105 active:scale-95 disabled:opacity-60 w-full max-w-md min-h-[52px]"
+            style={{ background: 'linear-gradient(135deg, #10B981, #F59E0B)', boxShadow: '0 0 30px rgba(16,185,129,0.4), 0 0 60px rgba(245,158,11,0.15)' }}
           >
             {loading ? "処理中..." : "今すぐ¥2,980で始める →"}
           </button>
@@ -190,7 +206,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="bg-gray-900 py-16 px-4">
+      <section className="py-16 px-4 relative z-10" style={{ background: 'rgba(15, 15, 26, 0.6)' }}>
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-bold text-center mb-10">利用者の声</h2>
           <div className="grid md:grid-cols-3 gap-6">
@@ -209,7 +225,7 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-gray-950 py-16 px-4" aria-label="よくある質問">
+      <section className="py-16 px-4 relative z-10" aria-label="よくある質問">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-2xl font-bold text-center mb-10">よくある質問</h2>
           <div className="space-y-4">
@@ -268,8 +284,8 @@ export default function Home() {
       </section>
 
       {/* Final CTA */}
-      <section className="bg-gray-950 py-16 px-4 text-center">
-        <div className="bg-white/10 backdrop-blur-md border border-red-500/40 shadow-lg rounded-2xl max-w-2xl mx-auto p-8">
+      <section className="py-16 px-4 text-center relative z-10">
+        <div className="rounded-2xl max-w-2xl mx-auto p-8" style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(16px)', border: '1px solid rgba(239, 68, 68, 0.3)', boxShadow: '0 0 30px rgba(239, 68, 68, 0.1), 0 8px 32px rgba(0,0,0,0.2)' }}>
           <div className="text-red-300 font-bold text-lg mb-3">{daysLeft > 0 ? `締め切りまであと${daysLeft}日` : "確定申告はAIでスムーズに"}</div>
           <h2 className="text-2xl font-black mb-4">今年の確定申告、AIで完成させよう</h2>
           <p className="text-gray-300 mb-6">¥2,980で税理士いらず。14日間返金保証付き。</p>
@@ -278,7 +294,8 @@ export default function Home() {
             onClick={startCheckout}
             disabled={loading}
             aria-label="今すぐ確定申告AIプレミアムを始める"
-            className="bg-green-500 hover:bg-green-400 text-black font-black text-lg px-10 py-4 rounded-xl transition disabled:opacity-60"
+            className="text-white font-black text-lg px-10 py-4 rounded-full transition-all duration-300 ease-out hover:scale-105 active:scale-95 disabled:opacity-60 min-h-[44px]"
+            style={{ background: 'linear-gradient(135deg, #10B981, #F59E0B)', boxShadow: '0 0 30px rgba(16,185,129,0.4)' }}
           >
             {loading ? "処理中..." : "今すぐ始める →"}
           </button>
@@ -286,7 +303,7 @@ export default function Home() {
       </section>
 
       {/* X Share */}
-      <section className="bg-gray-900 py-8 px-4 text-center">
+      <section className="py-8 px-4 text-center relative z-10" style={{ background: 'rgba(15, 15, 26, 0.6)' }}>
         <a
           href={"https://twitter.com/intent/tweet?text=" + encodeURIComponent("確定申告AIで今年の確定申告が30分で完成！税理士費用¥50,000不要！AIが経費の最適化・申告書の書き方を完全サポート → https://kakutei-shinkoku-ai.vercel.app #確定申告 #フリーランス #節税")}
           target="_blank"
@@ -302,7 +319,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-950 border-t border-gray-800 py-8 px-4 text-center text-gray-500 text-xs">
+      <footer className="border-t border-white/10 py-8 px-4 text-center text-gray-500 text-xs relative z-10">
         <p>© 2026 確定申告AI</p>
         <p className="mt-2">
           <Link href="/legal" className="hover:text-gray-300 underline">特定商取引法に基づく表記</Link>
@@ -316,13 +333,15 @@ export default function Home() {
       </footer>
       {showPayjp && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
-          <div className="backdrop-blur-sm bg-white/90 border border-white/40 shadow-xl rounded-2xl p-6 max-w-sm w-full text-center">
-            <button type="button" onClick={() => setShowPayjp(false)} aria-label="決済モーダルを閉じる" className="absolute top-3 right-3 text-gray-400 text-xl"></button>
-            <svg viewBox="0 0 48 48" width="36" height="36" className="text-green-400 mb-3 mx-auto" aria-hidden="true"><rect x="2" y="28" width="8" height="16" fill="currentColor"/><rect x="14" y="18" width="8" height="26" fill="currentColor"/><rect x="26" y="8" width="8" height="36" fill="currentColor"/><rect x="38" y="2" width="8" height="42" fill="currentColor"/></svg>
+          <div className="rounded-2xl p-6 max-w-sm w-full text-center relative" style={{ background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.3)', boxShadow: '0 25px 50px rgba(0,0,0,0.25)' }}>
+            <button type="button" onClick={() => setShowPayjp(false)} aria-label="決済モーダルを閉じる" className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 min-w-[44px] min-h-[44px] flex items-center justify-center">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </button>
+            <svg viewBox="0 0 48 48" width="36" height="36" className="text-emerald-500 mb-3 mx-auto" aria-hidden="true"><rect x="2" y="28" width="8" height="16" fill="currentColor"/><rect x="14" y="18" width="8" height="26" fill="currentColor"/><rect x="26" y="8" width="8" height="36" fill="currentColor"/><rect x="38" y="2" width="8" height="42" fill="currentColor"/></svg>
             <h2 className="text-lg font-bold mb-2">確定申告AIプレミアム</h2>
             <p className="text-sm text-gray-500 mb-4">¥2,980（買い切り）・14日間返金保証</p>
             <KomojuButton planId="standard" planLabel="今すぐ購入して申告を完成させる →"
-              className="w-full bg-green-500 hover:bg-green-400 text-black font-black py-3 rounded-xl disabled:opacity-50" />
+              className="w-full text-white font-black py-3 rounded-xl disabled:opacity-50" />
           </div>
         </div>
       )}

@@ -19,7 +19,7 @@ function SuccessContent() {
   return (
     <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4">
       <div className="bg-gray-900 border border-green-800 rounded-2xl p-10 max-w-md w-full text-center">
-        <div className="text-6xl mb-6">🎉</div>
+        <div className="text-6xl mb-6"></div>
         <h1 className="text-2xl font-black mb-4 text-green-400">
           {verified ? "お支払いが完了しました！" : "確認中..."}
         </h1>

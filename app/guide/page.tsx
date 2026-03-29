@@ -332,7 +332,7 @@ export default function GuidePage() {
           1. 申告に必要な書類チェックリスト
         </h2>
         <p className="text-gray-400 text-sm mb-8">
-          申告前に以下の書類がすべて揃っているか確認してください。□は未収集、✅は収集済みのイメージで使用してください。
+          申告前に以下の書類がすべて揃っているか確認してください。□は未収集、OKは収集済みのイメージで使用してください。
         </p>
 
         <div className="space-y-8">
