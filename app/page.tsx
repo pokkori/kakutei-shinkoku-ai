@@ -5,6 +5,7 @@ import Link from "next/link";
 import { loadStreak, updateStreak } from "@/lib/streak";
 import { ShareButtons } from "@/components/ShareButtons";
 import { AdBanner } from "@/components/AdBanner";
+import { UsageCounter } from "@/components/UsageCounter";
 
 const DEADLINE = new Date("2026-03-15T23:59:59+09:00");
 function getDaysLeft() {
@@ -120,6 +121,7 @@ export default function Home() {
           >
             {loading ? "処理中..." : "¥2,980で確定申告を完成させる →"}
           </button>
+          <div className="max-w-xs mx-auto mb-2"><UsageCounter /></div>
           <Link
             href="/tool"
             className="border border-gray-600 text-gray-300 hover:text-white hover:border-gray-400 font-semibold text-lg px-10 py-4 rounded-xl transition text-center"

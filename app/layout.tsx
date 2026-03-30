@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { GoogleAdScript } from "@/components/GoogleAdScript";
 import "./globals.css";
+import { InstallPrompt } from "@/components/InstallPrompt";
 
 const SITE_URL = "https://kakutei-shinkoku-ai.vercel.app";
 const TITLE = "確定申告AI - フリーランス・個人事業主の確定申告を30分で完成";
@@ -155,6 +156,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="antialiased min-h-screen text-white" style={{ background: '#0B1120' }}>
         {children}
+        <InstallPrompt />
         <Analytics />
         <GoogleAdScript />
       </body>
