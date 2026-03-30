@@ -13,6 +13,7 @@ interface KeywordData {
   heroDescription: string;
   features: { title: string; description: string }[];
   faqs: { question: string; answer: string }[];
+  lastUpdated: string;
 }
 
 const KEYWORDS: KeywordData[] = [
@@ -32,6 +33,7 @@ const KEYWORDS: KeywordData[] = [
       { question: "フリーランス1年目でも確定申告は必要ですか？", answer: "1年目でも所得が48万円（基礎控除額）を超える場合は確定申告が必要です。また、48万円以下でも源泉徴収されている場合は還付を受けるために申告した方がお得です。" },
       { question: "税理士に頼むのとAIの違いは何ですか？", answer: "税理士費用は相場で5万円〜15万円ですが、確定申告AIなら¥2,980で同等の精度を実現。24時間いつでも利用でき、待ち時間もありません。" },
     ],
+    lastUpdated: "2026-03-31",
   },
   {
     slug: "kakutei-shinkoku-yarikata",
@@ -49,6 +51,7 @@ const KEYWORDS: KeywordData[] = [
       { question: "確定申告に必要な書類は何ですか？", answer: "給与所得者は源泉徴収票、フリーランスは収入・経費の記録、医療費控除を受ける場合は医療費の領収書が必要です。マイナンバーも準備しましょう。" },
       { question: "確定申告は自分でできますか？", answer: "はい、確定申告AIを使えば税の知識がなくても自分で完結できます。質問に答えていくだけで申告書類が完成し、30分程度で終わります。" },
     ],
+    lastUpdated: "2026-03-31",
   },
   {
     slug: "kakutei-shinkoku-keihi",
@@ -66,6 +69,7 @@ const KEYWORDS: KeywordData[] = [
       { question: "スマホ代は経費になりますか？", answer: "事業で使用している割合に応じて経費にできます。プライベートと兼用の場合は、使用時間や通話記録などを基に事業使用割合を算出し、家事按分で計上します。" },
       { question: "経費の領収書は何年保管する必要がありますか？", answer: "白色申告は5年、青色申告は7年の保管義務があります。電子データでの保存も認められていますので、スキャンやアプリでの管理がおすすめです。" },
     ],
+    lastUpdated: "2026-03-31",
   },
   {
     slug: "aojiro-shinkoku-ai",
@@ -83,6 +87,7 @@ const KEYWORDS: KeywordData[] = [
       { question: "青色申告は今からでも始められますか？", answer: "青色申告をするには、申告する年の3月15日までに「青色申告承認申請書」を税務署に提出する必要があります。新規開業の場合は開業から2ヶ月以内に提出すれば、その年から青色申告が可能です。" },
       { question: "AIで複式簿記はできますか？", answer: "はい、確定申告AIは収入と経費を入力するだけで複式簿記の形式に自動変換します。簿記の知識がなくても65万円控除に必要な帳簿を作成できます。" },
     ],
+    lastUpdated: "2026-03-31",
   },
   {
     slug: "kakutei-shinkoku-ikura-kara",
@@ -100,6 +105,7 @@ const KEYWORDS: KeywordData[] = [
       { question: "フリーランスはいくらから確定申告が必要ですか？", answer: "フリーランス（個人事業主）の場合、所得が48万円（基礎控除額）を超えると確定申告が必要です。ただし、それ以下でも源泉徴収されている報酬がある場合、申告すれば還付を受けられる可能性があります。" },
       { question: "確定申告しないとどうなりますか？", answer: "申告が必要なのに行わない場合、無申告加算税（最大20%）や延滞税が課される可能性があります。悪質な場合は重加算税（最大40%）が適用されることもあります。" },
     ],
+    lastUpdated: "2026-03-31",
   },
   {
     slug: "fukugyou-kakutei-shinkoku",
@@ -117,6 +123,7 @@ const KEYWORDS: KeywordData[] = [
       { question: "副業の確定申告で会社にバレますか？", answer: "確定申告時に住民税の納付方法を「自分で納付（普通徴収）」にすれば、副業分の住民税が会社の給与から天引きされないため、バレるリスクを軽減できます。" },
       { question: "副業の確定申告で必要な書類は？", answer: "副業先からの支払調書や源泉徴収票、経費の領収書、本業の源泉徴収票が必要です。確定申告AIに入力すれば、必要書類のチェックリストも自動生成されます。" },
     ],
+    lastUpdated: "2026-03-31",
   },
   {
     slug: "e-tax-yarikata",
@@ -134,6 +141,7 @@ const KEYWORDS: KeywordData[] = [
       { question: "e-Taxに必要なものは何ですか？", answer: "マイナンバーカード（または利用者識別番号）、ICカードリーダー（またはマイナンバーカード対応スマホ）、パソコンまたはスマホが必要です。" },
       { question: "e-Taxは初めてでも使えますか？", answer: "はい、確定申告AIがステップバイステップでガイドしますので、初めてでも問題なく使えます。マイナンバーカードとスマホがあれば、最短30分で申告が完了します。" },
     ],
+    lastUpdated: "2026-03-31",
   },
   {
     slug: "iryouhi-koujo",
@@ -151,6 +159,7 @@ const KEYWORDS: KeywordData[] = [
       { question: "市販薬も医療費控除の対象ですか？", answer: "治療目的の市販薬は医療費控除の対象です。また、セルフメディケーション税制を選択すれば、スイッチOTC医薬品の購入費が12,000円を超えた分が控除対象になります（最大88,000円）。" },
       { question: "医療費の領収書は提出が必要ですか？", answer: "現在は領収書の提出は不要ですが、「医療費控除の明細書」の作成が必要です。また、領収書は5年間の保管義務があります。確定申告AIなら入力するだけで明細書が自動作成されます。" },
     ],
+    lastUpdated: "2026-03-31",
   },
   {
     slug: "furusato-nouzei-shinkoku",
@@ -168,6 +177,7 @@ const KEYWORDS: KeywordData[] = [
       { question: "ワンストップ特例を申請していたが確定申告する場合は？", answer: "確定申告を行うとワンストップ特例は無効になります。確定申告にふるさと納税の寄付金控除を必ず含めてください。含め忘れると控除が受けられなくなります。" },
       { question: "ふるさと納税の確定申告に必要な書類は？", answer: "各自治体から届く「寄付金受領証明書」が必要です。また、マイナポータル連携を使えば証明書の取得・入力が自動化されます。確定申告AIで簡単に申告できます。" },
     ],
+    lastUpdated: "2026-03-31",
   },
   {
     slug: "zeirishi-hiyou",
@@ -185,6 +195,7 @@ const KEYWORDS: KeywordData[] = [
       { question: "AIは税理士と同じ精度ですか？", answer: "確定申告AIは最新の税制に基づいて計算を行い、経費分類・控除チェック・申告書作成を税理士と同等の精度で実行します。ただし、特殊な税務相談は税理士にご相談ください。" },
       { question: "AIを使うデメリットはありますか？", answer: "複雑な法人税務や相続税など特殊なケースでは税理士の専門知識が必要です。個人の確定申告（給与所得・事業所得・不動産所得など）であれば、AIで十分対応可能です。" },
     ],
+    lastUpdated: "2026-03-31",
   },
 ];
 
@@ -201,6 +212,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: data.title,
     description: data.description,
+    other: {
+      "article:modified_time": data.lastUpdated,
+    },
     openGraph: {
       title: data.title,
       description: data.description,
@@ -230,6 +244,7 @@ export default async function KeywordPage({ params }: { params: Promise<{ slug: 
   const faqLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "dateModified": data.lastUpdated,
     mainEntity: data.faqs.map((faq) => ({
       "@type": "Question",
       name: faq.question,
@@ -342,6 +357,11 @@ export default async function KeywordPage({ params }: { params: Promise<{ slug: 
             </Link>
           </div>
         </section>
+
+        {/* LastUpdated */}
+        <p className="text-center text-xs text-white/40 mt-8">
+          最終更新: 2026年3月31日
+        </p>
 
         {/* CrossSell */}
         <section className="px-4 py-16 max-w-5xl mx-auto">
