@@ -6,6 +6,7 @@ import { loadStreak, updateStreak } from "@/lib/streak";
 import { ShareButtons } from "@/components/ShareButtons";
 import { AdBanner } from "@/components/AdBanner";
 import { UsageCounter } from "@/components/UsageCounter";
+import { CrossSell } from "@/components/CrossSell";
 
 const DEADLINE = new Date("2026-03-15T23:59:59+09:00");
 function getDaysLeft() {
@@ -126,8 +127,9 @@ export default function Home() {
             href="/tool"
             className="border border-gray-600 text-gray-300 hover:text-white hover:border-gray-400 font-semibold text-lg px-10 py-4 rounded-xl transition text-center"
           >
-            まず無料で試す（3回）
+            無料でAIが書類を作成
           </Link>
+          <p className="text-xs opacity-60 mt-2">※最新税制対応・登録不要</p>
         </div>
         <p className="text-gray-500 text-sm mt-4">14日間返金保証 ・ クレジットカード / Apple Pay 対応</p>
       </section>
@@ -357,6 +359,8 @@ export default function Home() {
       </section>
 
       {/* Footer */}
+      <CrossSell currentService="確定申告AI" />
+
       <footer className="border-t border-white/10 py-8 px-4 text-center text-gray-500 text-xs relative z-10">
         <p>© 2026 確定申告AI</p>
         <p className="mt-2">

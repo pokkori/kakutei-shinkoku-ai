@@ -1,8 +1,17 @@
 import type { Metadata } from "next";
+import { Noto_Sans_JP } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GoogleAdScript } from "@/components/GoogleAdScript";
 import "./globals.css";
 import { InstallPrompt } from "@/components/InstallPrompt";
+
+const notoSansJP = Noto_Sans_JP({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+  variable: "--font-noto-sans-jp",
+});
 
 const SITE_URL = "https://kakutei-shinkoku-ai.vercel.app";
 const TITLE = "確定申告AI - フリーランス・個人事業主の確定申告を30分で完成";
@@ -143,7 +152,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ja">
+    <html lang="ja" className={notoSansJP.variable}>
       <head>
         <script
           type="application/ld+json"
@@ -158,6 +167,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         <InstallPrompt />
         <Analytics />
+        <SpeedInsights />
         <GoogleAdScript />
       </body>
     </html>
