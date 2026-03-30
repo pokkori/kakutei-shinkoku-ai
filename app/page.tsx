@@ -113,6 +113,24 @@ export default function Home() {
           <strong className="text-white">税理士費用¥50,000不要。¥2,980で今年の確定申告を完結。</strong>
         </p>
         <div className="mt-6 mb-4"><TrustBadge /></div>
+        {/* ヒーロー内サンプルプレビュー — アハモーメント */}
+        <div className="max-w-xl mx-auto mb-6 mt-2">
+          <p className="text-xs text-white/40 text-center mb-2">AIが生成する確定申告の一例</p>
+          <div className="bg-white/5 border border-blue-300/30 rounded-xl overflow-hidden text-left">
+            <div className="bg-blue-500/10 border-b border-blue-300/20 px-4 py-2 flex items-center gap-2">
+              <span className="text-xs font-bold text-blue-400">入力:</span>
+              <span className="text-xs text-white/70">フリーランス・年収320万円・経費80万円・青色申告</span>
+            </div>
+            <div className="px-4 py-3">
+              <span className="inline-block bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded mb-2">AI診断結果</span>
+              <pre className="text-xs text-white/80 whitespace-pre-wrap font-sans leading-relaxed">{`課税所得：約155万円（所得税率5%）
+所得税概算：¥77,500
+住民税概算：¥155,000
+青色申告特別控除：¥650,000 適用可
+→ 経費と控除を最大化すると実質税負担 ¥232,500`}</pre>
+            </div>
+          </div>
+        </div>
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
           <button
             type="button"
