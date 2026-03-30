@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
+import { GoogleAdScript } from "@/components/GoogleAdScript";
 import "./globals.css";
 
 const SITE_URL = "https://kakutei-shinkoku-ai.vercel.app";
@@ -155,6 +156,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="antialiased min-h-screen text-white" style={{ background: '#0B1120' }}>
         {children}
         <Analytics />
+        <GoogleAdScript />
       </body>
     </html>
   );

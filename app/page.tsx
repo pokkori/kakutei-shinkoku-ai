@@ -3,6 +3,8 @@ import KomojuButton from "@/components/KomojuButton";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { loadStreak, updateStreak } from "@/lib/streak";
+import { ShareButtons } from "@/components/ShareButtons";
+import { AdBanner } from "@/components/AdBanner";
 
 const DEADLINE = new Date("2026-03-15T23:59:59+09:00");
 function getDaysLeft() {
@@ -302,20 +304,19 @@ export default function Home() {
         </div>
       </section>
 
-      {/* X Share */}
+      {/* シェアセクション */}
       <section className="py-8 px-4 text-center relative z-10" style={{ background: 'rgba(15, 15, 26, 0.6)' }}>
-        <a
-          href={"https://twitter.com/intent/tweet?text=" + encodeURIComponent("確定申告AIで今年の確定申告が30分で完成！税理士費用¥50,000不要！AIが経費の最適化・申告書の書き方を完全サポート → https://kakutei-shinkoku-ai.vercel.app #確定申告 #フリーランス #節税")}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="確定申告AIをXでシェアする"
-          className="inline-flex items-center gap-2 bg-black hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-xl text-sm transition-colors"
-        >
-          <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-          </svg>
-          Xで共有する
-        </a>
+        <ShareButtons url="https://kakutei-shinkoku-ai.vercel.app" text="確定申告AIを使ってみた！" hashtags="確定申告AI" />
+      </section>
+
+      {/* AI免責バナー */}
+      <section className="px-4 pb-8 relative z-10">
+        <div className="max-w-2xl mx-auto bg-yellow-900/30 border border-yellow-700/50 rounded-lg p-3 text-sm text-yellow-200">
+          <p>
+            <svg className="w-4 h-4 inline-block mr-1 -mt-0.5 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            本サービスはAIによる参考情報であり、税務上の正式な助言ではありません。実際の確定申告は税理士にご相談ください。2026年3月時点の税法に基づいています。
+          </p>
+        </div>
       </section>
 
       {/* Footer */}
@@ -345,6 +346,7 @@ export default function Home() {
           </div>
         </div>
       )}
+      <AdBanner slot="" />
     </main>
   );
 }
