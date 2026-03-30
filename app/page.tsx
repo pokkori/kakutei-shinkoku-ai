@@ -30,6 +30,41 @@ export default function Home() {
   const daysLeft = getDaysLeft();
 
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: [
+              { '@type': 'Question', name: 'e-Taxって難しくないですか？', acceptedAnswer: { '@type': 'Answer', text: 'マイナンバーカードとスマホがあれば自宅から10分で電子申告が完了します。AIが手順を1ステップずつ解説するので、初めての方でも迷わず進められます。' } },
+              { '@type': 'Question', name: '青色申告と白色申告、どちらを選べばいいですか？', acceptedAnswer: { '@type': 'Answer', text: '年間売上が150万円以上のフリーランスには青色申告（65万円特別控除）をおすすめします。事前に開業届と青色申告承認申請書を提出する必要がありますが、確定申告AIが適切な選択を診断します。' } },
+              { '@type': 'Question', name: '副業収入が20万円を超えた場合、どうすればいいですか？', acceptedAnswer: { '@type': 'Answer', text: '給与所得者で副業の所得が年間20万円を超えた場合、確定申告が必要です。本業の源泉徴収票と副業の収支を合算して申告します。確定申告AIが副業収入の入力方法と申告書の書き方を案内します。' } },
+              { '@type': 'Question', name: '医療費控除はいくら以上から申告できますか？', acceptedAnswer: { '@type': 'Answer', text: '年間の医療費が10万円（総所得金額の5%が10万円を下回る場合はその金額）を超えた部分が医療費控除の対象です。薬局のレシート・歯科・市販薬（セルフメディケーション税制）なども含まれます。' } },
+              { '@type': 'Question', name: 'ふるさと納税のワンストップ特例と確定申告の違いは？', acceptedAnswer: { '@type': 'Answer', text: 'ワンストップ特例は給与所得者専用で、他に確定申告が不要な場合に利用できます。フリーランス・個人事業主は確定申告で寄附金控除として申告します。確定申告AIが最適な申告方法を計算します。' } },
+              { '@type': 'Question', name: 'インボイス制度（適格請求書）の登録は必要ですか？', acceptedAnswer: { '@type': 'Answer', text: 'クライアントが消費税課税事業者の場合、インボイス未登録だと取引を断られるリスクがあります。2023年10月施行の制度で、小規模事業者は「2割特例」（消費税の80%控除）が3年間適用可能です。状況に応じた判断をAIが診断します。' } },
+              { '@type': 'Question', name: '家賃の按分はどうやって計算しますか？', acceptedAnswer: { '@type': 'Answer', text: '自宅兼事務所の家賃は「業務に使用する専有面積 ÷ 全居住面積」で按分できます。例えば50m2の住居で10m2を仕事に使う場合は20%を経費計上可能です。確定申告AIが職業に応じた適切な按分率を提案します。' } },
+              { '@type': 'Question', name: 'iDeCoに加入すると税金はどれだけ減りますか？', acceptedAnswer: { '@type': 'Answer', text: '自営業・フリーランスの場合、iDeCoの掛金上限は月68,000円（年816,000円）で、全額が所得控除になります。例えば課税所得300万円（税率10%＋住民税10%）の方が月5万円加入すると、年間約12万円の節税効果があります。' } },
+              { '@type': 'Question', name: '税務調査で問題になりやすい経費は何ですか？', acceptedAnswer: { '@type': 'Answer', text: 'プライベートと業務の混在経費（飲食費・旅費・スマホ代）、領収書のない現金支出、家族への給与（青色専従者給与の届出未提出）、実態のない外注費などが税務調査で指摘されやすいです。確定申告AIが申告前にリスクチェックを行います。' } },
+              { '@type': 'Question', name: '確定申告の締め切りを過ぎてしまった場合はどうなりますか？', acceptedAnswer: { '@type': 'Answer', text: '締め切り後でも申告可能ですが、無申告加算税（15〜20%）と延滞税が課される場合があります。ただし還付申告（払いすぎた税金を取り戻す申告）は5年以内ならいつでも可能です。期限後でも確定申告AIが申告書作成をサポートします。' } },
+            ],
+          }).replace(/</g, '\\u003c'),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'SoftwareApplication',
+            name: '確定申告AI',
+            operatingSystem: 'Web',
+            applicationCategory: 'FinanceApplication',
+            offers: { '@type': 'Offer', price: 0, priceCurrency: 'JPY' },
+          }).replace(/</g, '\\u003c'),
+        }}
+      />
     <main className="min-h-screen relative overflow-hidden text-white" style={{ background: 'radial-gradient(ellipse at 20% 50%, rgba(16,185,129,0.12) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(245,158,11,0.10) 0%, transparent 50%), radial-gradient(ellipse at 50% 80%, rgba(5,150,105,0.08) 0%, transparent 50%), #0B1120' }}>
       {/* Floating particles */}
       <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0">
@@ -331,6 +366,10 @@ export default function Home() {
           {" ｜ "}
           <span>本サービスは情報提供を目的としており、税理士による税務相談の代替ではありません</span>
         </p>
+        <div className="flex items-center justify-center gap-2 text-xs text-gray-600 mt-4">
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          SSL暗号化通信 | データは安全に保護されています
+        </div>
       </footer>
       {showPayjp && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
@@ -348,5 +387,6 @@ export default function Home() {
       )}
       <AdBanner slot="" />
     </main>
+    </>
   );
 }
