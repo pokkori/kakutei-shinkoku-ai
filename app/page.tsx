@@ -7,6 +7,7 @@ import { ShareButtons } from "@/components/ShareButtons";
 import { AdBanner } from "@/components/AdBanner";
 import { UsageCounter } from "@/components/UsageCounter";
 import { CrossSell } from "@/components/CrossSell";
+import { TrustBadge } from "@/components/TrustBadge";
 
 const DEADLINE = new Date("2026-03-15T23:59:59+09:00");
 function getDaysLeft() {
@@ -111,6 +112,7 @@ export default function Home() {
           年収・経費を入力するだけで、AIが申告書の書き方・節税ポイント・手順を完全解説。<br />
           <strong className="text-white">税理士費用¥50,000不要。¥2,980で今年の確定申告を完結。</strong>
         </p>
+        <div className="mt-6 mb-4"><TrustBadge /></div>
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
           <button
             type="button"
