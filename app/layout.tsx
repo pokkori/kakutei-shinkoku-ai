@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Noto_Sans_JP } from "next/font/google";
+import { Noto_Sans_JP, M_PLUS_Rounded_1c } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GoogleAdScript } from "@/components/GoogleAdScript";
@@ -11,6 +11,13 @@ const notoSansJP = Noto_Sans_JP({
   weight: ["400", "700"],
   display: "swap",
   variable: "--font-noto-sans-jp",
+});
+
+const mPlusRounded = M_PLUS_Rounded_1c({
+  subsets: ["latin"],
+  weight: ["700", "800"],
+  display: "swap",
+  variable: "--font-rounded",
 });
 
 const SITE_URL = "https://kakutei-shinkoku-ai.vercel.app";
@@ -152,7 +159,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ja" className={notoSansJP.variable}>
+    <html lang="ja" className={`${notoSansJP.variable} ${mPlusRounded.variable}`}>
       <head>
         <script
           type="application/ld+json"
@@ -164,6 +171,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="antialiased min-h-screen text-white" style={{ background: '#0B1120' }}>
+        <div className="orb-container" aria-hidden="true">
+          <div className="orb orb-1" />
+          <div className="orb orb-2" />
+          <div className="orb orb-3" />
+        </div>
         {children}
         <InstallPrompt />
         <Analytics />

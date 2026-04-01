@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { GlowButton } from "@/components/GlowButton";
 import { updateStreak } from "@/lib/streak";
 
 const HISTORY_KEY = "kakuteishinkoku_history";
@@ -207,7 +208,7 @@ export default function ToolPage() {
         )}
 
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-black text-white">確定申告AI診断</h1>
+          <h1 className="text-2xl font-black text-white" style={{ fontFamily: 'var(--font-rounded)' }}>確定申告AI診断</h1>
           {history.length > 0 && (
             <button
               type="button"
@@ -373,14 +374,13 @@ export default function ToolPage() {
             />
           </div>
 
-          <button
+          <GlowButton
             type="submit"
             disabled={loading || !form.occupation || !form.revenue}
             aria-label="AIで確定申告を分析する"
-            className="w-full bg-green-500 hover:bg-green-400 text-black font-black text-lg py-4 rounded-xl transition disabled:opacity-50"
           >
             {loading ? "AI分析中...（30秒ほどお待ちください）" : "AIで確定申告を分析する →"}
-          </button>
+          </GlowButton>
         </form>
 
         {errorMsg && (
@@ -416,7 +416,7 @@ export default function ToolPage() {
         {/* Results */}
         {result && (
           <div className="mt-10">
-            <h2 className="text-xl font-black mb-4 text-white flex items-center gap-2">
+            <h2 className="text-xl font-black mb-4 text-white flex items-center gap-2" style={{ fontFamily: 'var(--font-rounded)' }}>
               <svg viewBox="0 0 24 24" width="22" height="22" className="text-green-400" aria-hidden="true"><rect x="2" y="12" width="4" height="10" fill="currentColor"/><rect x="9" y="7" width="4" height="15" fill="currentColor"/><rect x="16" y="2" width="4" height="20" fill="currentColor"/></svg>
               AI分析結果
             </h2>
@@ -435,7 +435,7 @@ export default function ToolPage() {
                 </button>
               ))}
             </div>
-            <div className="backdrop-blur-sm bg-white/5 border border-white/10 shadow-lg rounded-2xl p-6 min-h-48">
+            <div style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '20px', boxShadow: '0 8px 32px 0 rgba(0,0,0,0.36)' }} className="p-6 min-h-48">
               {renderContent(result[activeTab])}
             </div>
             <div className="flex gap-3 mt-4 flex-wrap">
@@ -476,7 +476,7 @@ export default function ToolPage() {
             <div className="flex justify-center mb-4">
               <svg viewBox="0 0 48 48" width="48" height="48" className="text-green-400" aria-hidden="true"><rect x="14" y="22" width="20" height="18" rx="3" fill="currentColor"/><path d="M16 22V16a8 8 0 1 1 16 0v6" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round"/><circle cx="24" cy="31" r="2.5" fill="white"/></svg>
             </div>
-            <h2 className="text-xl font-black mb-3">無料回数を使い切りました</h2>
+            <h2 className="text-xl font-black mb-3" style={{ fontFamily: 'var(--font-rounded)' }}>無料回数を使い切りました</h2>
             <p className="text-gray-400 text-sm mb-6">
               プレミアム版（¥2,980/年）にアップグレードすると、
               確定申告AIを無制限で使用できます。
