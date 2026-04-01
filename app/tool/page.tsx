@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { GlowButton } from "@/components/GlowButton";
 import { updateStreak } from "@/lib/streak";
+import ConfettiLaunch from "@/components/ConfettiLaunch";
 
 const HISTORY_KEY = "kakuteishinkoku_history";
 
@@ -50,6 +51,7 @@ export default function ToolPage() {
   const [copied, setCopied] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const [form, setForm] = useState({
     reportType: "white",
@@ -140,6 +142,8 @@ export default function ToolPage() {
       setResult(parsed);
       setIsStreaming(false);
       updateStreak("kakutei_ai");
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 4000);
       setStreamingText("");
       // 履歴に保存
       const entry: HistoryEntry = {
@@ -178,6 +182,7 @@ export default function ToolPage() {
 
   return (
     <main className="min-h-screen bg-gray-950 pb-20">
+      <ConfettiLaunch trigger={showConfetti} message="分析完了！" />
       {/* Header */}
       <header className="bg-gray-900 border-b border-gray-800 px-4 py-4 flex items-center justify-between">
         <Link href="/" className="text-green-400 font-black text-xl">確定申告AI</Link>
@@ -435,7 +440,7 @@ export default function ToolPage() {
                 </button>
               ))}
             </div>
-            <div style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '20px', boxShadow: '0 8px 32px 0 rgba(0,0,0,0.36)' }} className="p-6 min-h-48">
+            <div className="glass-dark rounded-2xl p-6 min-h-48">
               {renderContent(result[activeTab])}
             </div>
             <div className="flex gap-3 mt-4 flex-wrap">
