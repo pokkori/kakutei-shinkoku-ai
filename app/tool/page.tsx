@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { GlowButton } from "@/components/GlowButton";
-import { updateStreak } from "@/lib/streak";
+import { updateStreak, loadStreak, getStreakMilestoneMessage, type StreakData } from "@/lib/streak";
 import ConfettiLaunch from "@/components/ConfettiLaunch";
 
 const HISTORY_KEY = "kakuteishinkoku_history";
@@ -52,6 +52,8 @@ export default function ToolPage() {
   const [isStreaming, setIsStreaming] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [streak, setStreak] = useState<StreakData | null>(null);
+  const [streakMsg, setStreakMsg] = useState<string | null>(null);
 
   const [form, setForm] = useState({
     reportType: "white",
@@ -76,6 +78,7 @@ export default function ToolPage() {
         if (d.remaining !== undefined) setRemaining(d.remaining);
       });
     setHistory(loadHistory());
+    setStreak(loadStreak("kakutei_ai"));
   }, []);
 
   function setField(key: string, value: string | boolean) {
@@ -141,7 +144,10 @@ export default function ToolPage() {
       };
       setResult(parsed);
       setIsStreaming(false);
-      updateStreak("kakutei_ai");
+      const s = updateStreak("kakutei_ai");
+      setStreak(s);
+      const msg = getStreakMilestoneMessage(s.count);
+      if (msg) setStreakMsg(msg);
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 4000);
       setStreamingText("");
@@ -214,6 +220,11 @@ export default function ToolPage() {
 
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-black text-white" style={{ fontFamily: 'var(--font-rounded)' }}>確定申告AI診断</h1>
+          {streak && streak.count > 0 && (
+            <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-200 rounded-full px-3 py-1 text-sm">
+              <span>{streak.count}日連続利用中</span>
+            </div>
+          )}
           {history.length > 0 && (
             <button
               type="button"
@@ -226,6 +237,8 @@ export default function ToolPage() {
             </button>
           )}
         </div>
+
+        {streakMsg && <div className="text-orange-600 font-bold text-sm mb-4">{streakMsg}</div>}
 
         {/* 相談履歴パネル */}
         {showHistory && history.length > 0 && (
