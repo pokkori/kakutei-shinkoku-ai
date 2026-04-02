@@ -1,6 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { rateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
@@ -8,16 +9,6 @@ const FREE_LIMIT = 3;
 
 function getClient() {
   return new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-}
-
-const rateLimit = new Map<string, { count: number; resetAt: number }>();
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimit.get(ip);
-  if (!entry || now > entry.resetAt) { rateLimit.set(ip, { count: 1, resetAt: now + 60000 }); return true; }
-  if (entry.count >= 10) return false;
-  entry.count++;
-  return true;
 }
 
 const SYSTEM_PROMPT = `あなたは税理士登録15年・FP1級資格保持者として、年間500件以上の個人事業主・フリーランス向け確定申告をサポートしてきた税務専門AIです。
@@ -60,10 +51,8 @@ const REPORT_TYPES: Record<string, string> = {
 };
 
 export async function POST(req: NextRequest) {
-  const ip = req.headers.get("x-forwarded-for") || "unknown";
-  if (!checkRateLimit(ip)) {
-    return NextResponse.json({ error: "リクエストが多すぎます" }, { status: 429 });
-  }
+  const rateLimitRes = await rateLimit(req);
+  if (rateLimitRes) return rateLimitRes;
 
   const cookieStore = await cookies();
   const isPremium = cookieStore.get("stripe_premium")?.value === "1";
