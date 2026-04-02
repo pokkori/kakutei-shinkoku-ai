@@ -3,6 +3,7 @@ import { Noto_Sans_JP, M_PLUS_Rounded_1c } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GoogleAdScript } from "@/components/GoogleAdScript";
+import CookieBanner from "@/components/CookieBanner";
 import "./globals.css";
 import { InstallPrompt } from "@/components/InstallPrompt";
 
@@ -181,6 +182,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Analytics />
         <SpeedInsights />
         <GoogleAdScript />
+        <CookieBanner />
       </body>
     </html>
   );
