@@ -165,8 +165,12 @@ export default function Home() {
               { title: "申告書の書き方がわからない", desc: "どの欄に何を書くのか、どの書類が必要なのかさっぱり…" },
               { title: "経費の計上漏れが怖い", desc: "どこまで経費にできるのか判断できず、結果的に税金を多く払いすぎている" },
               { title: "税理士に頼む余裕がない", desc: "税理士への依頼は¥50,000〜¥150,000。フリーランス1年目にはきつすぎる" },
-            ].map((item) => (
-              <div key={item.title} className="backdrop-blur-sm bg-white/5 border border-white/10 shadow-lg rounded-2xl p-6">
+            ].map((item, i) => (
+              <div
+                key={item.title}
+                className="backdrop-blur-sm bg-white/5 border border-white/10 shadow-lg rounded-2xl p-6 opacity-0 translate-y-4 animate-[fadeInUp_0.5s_ease-out_forwards]"
+                style={{ animationDelay: `${i * 0.15}s` }}
+              >
                 <div className="w-10 h-1 bg-red-500 rounded mb-3" />
                 <h3 className="font-bold text-lg mb-2 text-red-300">{item.title}</h3>
                 <p className="text-gray-400 text-sm">{item.desc}</p>
