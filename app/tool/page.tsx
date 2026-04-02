@@ -160,7 +160,7 @@ export default function ToolPage() {
       saveHistory(updated);
       setHistory(updated);
     } catch {
-      setErrorMsg("通信エラーが発生しました。インターネット接続を確認して再試行してください。");
+      setErrorMsg("少し時間をおいてもう一度お試しください。");
     }
     setLoading(false);
   }
