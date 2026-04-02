@@ -68,7 +68,7 @@ export default function Home() {
           }).replace(/</g, '\\u003c'),
         }}
       />
-    <main className="min-h-screen relative overflow-hidden text-white" style={{ background: 'radial-gradient(ellipse at 20% 50%, rgba(16,185,129,0.12) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(245,158,11,0.10) 0%, transparent 50%), radial-gradient(ellipse at 50% 80%, rgba(5,150,105,0.08) 0%, transparent 50%), #0B1120' }}>
+    <main className="min-h-screen relative overflow-hidden text-white z-10" style={{ background: 'radial-gradient(ellipse at 20% 50%, rgba(16,185,129,0.12) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(245,158,11,0.10) 0%, transparent 50%), radial-gradient(ellipse at 50% 80%, rgba(5,150,105,0.08) 0%, transparent 50%), transparent' }}>
       {/* Floating particles */}
       <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0">
         {[

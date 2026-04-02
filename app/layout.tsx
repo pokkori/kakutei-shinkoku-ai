@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GoogleAdScript } from "@/components/GoogleAdScript";
 import CookieBanner from "@/components/CookieBanner";
+import OrbBackground from "@/components/OrbBackground";
 import "./globals.css";
 import { InstallPrompt } from "@/components/InstallPrompt";
 
@@ -36,13 +37,13 @@ export const metadata: Metadata = {
     siteName: "確定申告AI",
     locale: "ja_JP",
     type: "website",
-    images: [{ url: `${SITE_URL}/og.png`, width: 1200, height: 630, alt: "確定申告AI" }],
+    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "確定申告AI" }],
   },
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description: DESC,
-    images: [`${SITE_URL}/og.png`],
+    images: [`${SITE_URL}/opengraph-image`],
   },
   metadataBase: new URL(SITE_URL),
   manifest: "/manifest.json",
@@ -171,18 +172,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="antialiased min-h-screen text-white" style={{ background: '#0B1120' }}>
-        <div className="orb-container" aria-hidden="true">
-          <div className="orb orb-1" />
-          <div className="orb orb-2" />
-          <div className="orb orb-3" />
+      <body className="antialiased min-h-screen text-white bg-[#0B1120]">
+        <OrbBackground theme="finance" />
+        <div className="relative" style={{ zIndex: 1 }}>
+          {children}
+          <InstallPrompt />
+          <CookieBanner />
         </div>
-        {children}
-        <InstallPrompt />
         <Analytics />
         <SpeedInsights />
         <GoogleAdScript />
-        <CookieBanner />
       </body>
     </html>
   );

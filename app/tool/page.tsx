@@ -187,7 +187,7 @@ export default function ToolPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-950 pb-20">
+    <main className="min-h-screen bg-[#0B1120] pb-20 relative z-10">
       <ConfettiLaunch trigger={showConfetti} message="分析完了！" />
       {/* Header */}
       <header className="bg-gray-900 border-b border-gray-800 px-4 py-4 flex items-center justify-between">
