@@ -64,6 +64,8 @@ export default function Home() {
             name: '確定申告AI',
             operatingSystem: 'Web',
             applicationCategory: 'FinanceApplication',
+            description: 'フリーランス・副業・個人事業主の確定申告をAIが徹底サポート。e-Tax手順・青色申告・医療費控除・ふるさと納税・インボイス制度まで、申告前のリスクチェックも自動実施。',
+            url: 'https://kakutei-shinkoku-ai.vercel.app',
             offers: { '@type': 'Offer', price: 0, priceCurrency: 'JPY' },
           }).replace(/</g, '\\u003c'),
         }}
