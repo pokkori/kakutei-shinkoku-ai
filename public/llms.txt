@@ -1,26 +1,27 @@
 # 確定申告AI
+> 確定申告の書き方・経費計算・節税対策をAIがサポートするツール
 
-> フリーランス・副業・個人事業主の確定申告をAIが手順ごとにサポートする税務アシスタントサービス
+## サービス概要
+- **カテゴリ**: 税務AI
+- **URL**: https://kakutei-shinkoku-ai.vercel.app
+- **提供形態**: Webブラウザで利用可能（登録不要で試せます）
+- **開発**: Claude Code + Next.js 16 + Vercel
 
-## 概要
-e-Tax・青色申告・医療費控除・ふるさと納税・インボイス制度など確定申告に必要なあらゆる知識をAIが分かりやすく解説します。副業収入20万円超の申告方法から、フリーランスの経費計上・按分計算・iDeCo節税まで、個人の状況に合わせた最適な申告方法をAIが診断・サポートします。
+## 主要ページ
+- [トップページ](https://kakutei-shinkoku-ai.vercel.app/): メイン機能・サービス説明
+- [ツール](https://kakutei-shinkoku-ai.vercel.app/tool): AI機能の利用画面（一部サービス）
+- [プライバシーポリシー](https://kakutei-shinkoku-ai.vercel.app/privacy): 個人情報の取り扱い
+- [特定商取引法に基づく表記](https://kakutei-shinkoku-ai.vercel.app/legal): 法的情報
 
-## 対象ユーザー
-フリーランス・個人事業主、副業で年間20万円超の収入がある会社員、初めて確定申告をする方、節税方法を知りたい方
+## 利用シーン
+確定申告の書き方・経費計算・節税対策をAIがサポートするツール
 
-## 主な機能
-- e-Tax・青色申告・白色申告の方法を状況別に解説
-- 医療費控除・ふるさと納税・iDeCo・インボイス制度への対応サポート
-- 経費の按分計算（家賃・通信費・交通費等）のアドバイス
-- 税務調査リスクが高い経費の事前チェック機能
+## 技術スタック
+- フロントエンド: Next.js 16, React 19, TypeScript, Tailwind CSS
+- AI: Claude claude-sonnet-4-6 (Anthropic)
+- バックエンド: Vercel Edge Functions, Supabase
+- 決済: KOMOJU（クレジットカード・コンビニ払い対応）
 
-## 使い方
-1. 職業・収入形態（フリーランス・副業・個人事業主等）を選択する
-2. 申告に関して不明な点や悩みをAIに質問する
-3. AIが状況に応じた申告方法・節税策・手続きの順序を提示する
-
-## 料金
-無料で3回まで利用可能。プレミアムプランで無制限。
-
-## URL
-https://kakutei-shinkoku-ai.vercel.app
+## robots.txt
+AIクローラーによるインデックスを歓迎します。
+GPTBot, ClaudeBot, PerplexityBot, Googlebot-Extended のアクセスを許可しています。
