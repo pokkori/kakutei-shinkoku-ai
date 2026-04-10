@@ -4,7 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GoogleAdScript } from "@/components/GoogleAdScript";
 import CookieBanner from "@/components/CookieBanner";
-import OrbBackground from "@pokkori/ui/orb-background";
+import OrbBackground from "@/components/OrbBackground";
 import "./globals.css";
 import { InstallPrompt } from "@/components/InstallPrompt";
 
