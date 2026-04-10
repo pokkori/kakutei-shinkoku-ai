@@ -483,6 +483,24 @@ export default function ToolPage() {
                 Xでシェア
               </a>
             </div>
+
+            {/* Next Action Guide */}
+            <div className="mt-4 bg-white/5 border border-white/10 rounded-xl p-4">
+              <p className="text-xs font-bold text-white/60 mb-3 uppercase tracking-wide">次のステップ</p>
+              <div className="space-y-2">
+                {[
+                  { step: 1, text: "申告書類を印刷して手元に保管する", href: "/tool" },
+                  { step: 2, text: "税理士・記帳代行に添削を依頼する", href: "https://www.freee.co.jp/?utm_source=kakutei-ai" },
+                  { step: 3, text: "e-Taxで電子申告する（1月〜3月15日）", href: "https://www.e-tax.nta.go.jp/" },
+                ].map(({ step, text, href }) => (
+                  <a key={step} href={href} target={href.startsWith("http") ? "_blank" : "_self"} rel={href.startsWith("http") ? "noopener noreferrer" : undefined} className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 transition group">
+                    <div className="w-6 h-6 rounded-full bg-green-500/30 text-green-300 text-xs font-black flex items-center justify-center shrink-0">{step}</div>
+                    <span className="text-sm text-white/80 flex-1">{text}</span>
+                    <svg className="w-4 h-4 text-white/30 group-hover:text-white/60 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 18l6-6-6-6"/></svg>
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
         )}
       </div>
