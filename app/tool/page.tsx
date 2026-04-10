@@ -5,6 +5,7 @@ import { GlowButton } from "@/components/GlowButton";
 import { updateStreak, loadStreak, getStreakMilestoneMessage, type StreakData } from "@/lib/streak";
 import ConfettiLaunch from "@/components/ConfettiLaunch";
 import AIResultCard from "@/components/AIResultCard";
+import ResultSkeleton from "@/components/ResultSkeleton";
 
 const HISTORY_KEY = "kakuteishinkoku_history";
 
@@ -408,27 +409,16 @@ export default function ToolPage() {
           </div>
         )}
 
-        {/* Streaming preview */}
-        {loading && (
+        {/* Loading skeleton + streaming preview */}
+        {loading && !isStreaming && <div className="mt-8"><ResultSkeleton accentColor="#10B981" rows={5} /></div>}
+        {loading && isStreaming && (
           <div className="mt-8 backdrop-blur-sm bg-white/5 border border-white/10 shadow-lg rounded-2xl p-6">
             <div className="flex items-center gap-2 mb-3">
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-green-500" />
-              <span className="text-green-400 text-sm font-bold">
-                {isStreaming ? "AI分析結果を受信中..." : "AIに接続中..."}
-              </span>
-              {isStreaming && (
-                <span className="ml-auto text-gray-500 text-xs">リアルタイム生成中</span>
-              )}
+              <span className="text-green-400 text-sm font-bold">AI分析結果を受信中...</span>
+              <span className="ml-auto text-gray-500 text-xs">リアルタイム生成中</span>
             </div>
-            {isStreaming && streamingText ? (
-              <div className="text-gray-300 text-sm whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto">{streamingText.slice(-800)}</div>
-            ) : (
-              <div className="flex gap-1.5 mt-2">
-                <div className="h-2 w-2 rounded-full bg-green-500 animate-bounce" style={{ animationDelay: "0ms" }} />
-                <div className="h-2 w-2 rounded-full bg-green-500 animate-bounce" style={{ animationDelay: "150ms" }} />
-                <div className="h-2 w-2 rounded-full bg-green-500 animate-bounce" style={{ animationDelay: "300ms" }} />
-              </div>
-            )}
+            <div className="text-gray-300 text-sm whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto">{streamingText.slice(-800)}</div>
           </div>
         )}
 
