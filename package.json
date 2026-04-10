@@ -6,13 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "biome check --write .",
+    "format": "biome format --write .",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "test:browser": "vitest --browser.enabled"
   },
   "dependencies": {
+    "@pokkori/ui": "file:../packages/ui",
     "@anthropic-ai/sdk": "^0.78.0",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.37.0",
@@ -26,19 +29,21 @@
     "stripe": "^20.4.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.4.10",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^4.3.4",
-    "@vitest/coverage-v8": "^3.1.1",
-    "@vitest/ui": "^3.1.1",
+    "@vitest/browser": "^4.0.0",
+    "@vitest/coverage-v8": "^4.0.0",
+    "@vitest/ui": "^4.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "jsdom": "^26.1.0",
     "msw": "^2.7.5",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vitest": "^3.1.1"
+    "vitest": "^4.0.0"
   }
 }

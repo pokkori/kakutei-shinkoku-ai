@@ -4,6 +4,7 @@ import Link from "next/link";
 import { GlowButton } from "@/components/GlowButton";
 import { updateStreak, loadStreak, getStreakMilestoneMessage, type StreakData } from "@/lib/streak";
 import ConfettiLaunch from "@/components/ConfettiLaunch";
+import AIResultCard from "@/components/AIResultCard";
 
 const HISTORY_KEY = "kakuteishinkoku_history";
 
@@ -453,9 +454,11 @@ export default function ToolPage() {
                 </button>
               ))}
             </div>
-            <div className="glass-dark rounded-2xl p-6 min-h-48">
-              {renderContent(result[activeTab])}
-            </div>
+            <AIResultCard
+              text={result[activeTab]}
+              accentColor="#10B981"
+              renderContent={renderContent}
+            />
             <div className="flex gap-3 mt-4 flex-wrap">
               <button
                 onClick={() => { navigator.clipboard.writeText(result[activeTab]); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
